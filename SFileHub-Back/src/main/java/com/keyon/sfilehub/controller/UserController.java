@@ -13,7 +13,7 @@ public class UserController {
         return "Hello World!";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/userLogin")
     public String login(User user) {
         System.out.println(user.toString());
         return "login";
