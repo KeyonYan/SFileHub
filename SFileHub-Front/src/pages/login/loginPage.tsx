@@ -2,17 +2,20 @@ import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import './loginPage.css';
+import { useNavigate } from 'react-router-dom';
 import { login, hello } from '../../api/index';
 
 const LoginPage: React.FC = () => {
-    
+  const navigate = useNavigate();
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
-    hello().then(res => {
-        alert(res);
-    });
     login({ username: values.username, password: values.password}).then(res => {
-        alert(res);
+        console.log(res);
+        if (res.code === 200) {
+          navigate('/home');
+        } else {
+          alert(res.msg);
+        }
     });
   };
 
