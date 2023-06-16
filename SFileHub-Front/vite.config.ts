@@ -4,21 +4,16 @@ import * as path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [reactRefresh()],
-  // 配置路径别名
-      resolve: {
-        alias: {
-          "@": path.resolve(__dirname, "src"),
+  server: {
+      host: "localhost",
+      port: 3000,
+      https: false,
+      proxy: {
+        "/api": {
+          target: "http://localhost:9999/sfilehub",
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/api/, ""),
         },
       },
-    server: {
-        port: 3000,
-        proxy: {
-          "/api": {
-            target: "https://yourBaseUrl",
-            changeOrigin: true,
-            cookieDomainRewrite: "",
-            secure: false,
-          },
-        },
-      },
+    },
 });
