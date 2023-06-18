@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, Row, Col } from 'antd';
 import './loginPage.css';
 import { useNavigate } from 'react-router-dom';
 import { login, hello } from '../../api/index';
@@ -23,44 +23,46 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <Form
-      name="normal_login"
-      className="login-form"
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-    >
-      <Form.Item
-        name="username"
-        rules={[{ required: true, message: 'Please input your Username!' }]}
-      >
-        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
-      </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: 'Please input your Password!' }]}
-      >
-        <Input
-          prefix={<LockOutlined className="site-form-item-icon" />}
-          type="password"
-          placeholder="Password"
-        />
-      </Form.Item>
-      <Form.Item>
-        <Form.Item name="remember" valuePropName="checked" noStyle>
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
+    <div className='login-page-color h-screen flex justify-center items-center z-1'>
+      <Form
+          name="normal_login"
+          className="login-form w-1/3 p-8 bg-white shadow-lg rounded"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+        >
+          <div className='flex justify-center items-center py-8'>
+            <h1 className='text-5xl font-bold'>SFile🗃️Hub</h1>
+          </div>
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: 'Please input your Username!' }]}
+          >
+            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: 'Please input your Password!' }]}
+          >
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+          </Form.Item>
 
-        <a className="login-form-forgot" href="">
-          Forgot password
-        </a>
-      </Form.Item>
-
-      <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          Log in
-        </Button>
-      </Form.Item>
-    </Form>
+          <Form.Item className='flex justify-center items-center'>
+            <Button htmlType="submit" className="login-form-button">
+              Login
+            </Button>
+          </Form.Item>
+      </Form>
+    </div>
+    
   );
 };
 export default LoginPage;
