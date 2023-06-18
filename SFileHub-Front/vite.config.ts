@@ -1,12 +1,13 @@
 import { defineConfig } from "vite";
 import reactRefresh from "@vitejs/plugin-react-refresh";
-import * as path from "path";
+import tailwindcss from "tailwindcss";
+import autoprefixer from "autoprefixer";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [reactRefresh()],
   server: {
       host: "localhost",
-      port: 3000,
+      port: 4000,
       https: false,
       proxy: {
         "/api": {
@@ -16,4 +17,12 @@ export default defineConfig({
         },
       },
     },
+  css: {
+    postcss: {
+      plugins: [
+        tailwindcss,
+        autoprefixer
+      ]
+    }
+  }
 });

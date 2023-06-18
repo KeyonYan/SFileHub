@@ -1,5 +1,8 @@
 // tailwind.config.js
-export const purge = [];
+export const content = [
+  "./src/pages/**/*.{js,jsx,ts,tsx}",
+  "./src/components/**/*.{js,jsx,ts,tsx}"
+];
 export const darkMode = false;
 export const theme = {
   extend: {
@@ -15,3 +18,6 @@ export const theme = {
 };
 export const variants = {};
 export const plugins = [];
+export const corePlugins = {
+  preflight: true,
+}

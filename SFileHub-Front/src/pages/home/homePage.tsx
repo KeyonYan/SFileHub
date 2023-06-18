@@ -1,12 +1,9 @@
-import React from 'react';
-import { useStore } from '../../main';
+import React from 'react'
+import NavBar from '../../components/navBar/navBar'
 
-const LoginPage: React.FC = () => {
-  const userName = useStore(state => state.userName);
+const HomePage: React.FC = () => {
   return (
-    <div>
-        Welcome Home Page, {userName}
-    </div>
-  );
-};
-export default LoginPage;
+    <NavBar/>
+  )
+}
+export default HomePage;
