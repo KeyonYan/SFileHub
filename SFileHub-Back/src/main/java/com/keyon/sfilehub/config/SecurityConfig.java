@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -30,6 +31,8 @@ import java.io.PrintWriter;
 public class SecurityConfig {
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisPersistentRe redisPersistentRe;
 
     /**
      * 密码明文加密方式配置
@@ -53,15 +56,16 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .antMatchers("/login").permitAll()
-//                .and()
-//                .formLogin().disable()
-//                .csrf().disable();
-        http.httpBasic()
-                .and()
+        http
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .rememberMe()
+                .tokenRepository(redisPersistentRe) // 配置token持久化方法
+                .rememberMeParameter("remember")
+                .rememberMeCookieName("remember-me-cookie-name") // 设置cookie名称
+                .userDetailsService(userService) // 设置userDetailsService
+                .tokenValiditySeconds(60) // cookie有效期
                 .and()
                 .formLogin()
                 .successHandler((req, resp, auth) -> { // 登录成功直接返回给前端JSON数据，而不是后端重定向
@@ -92,6 +96,7 @@ public class SecurityConfig {
                 .csrf().disable();
         return http.build();
     }
+
 
     /**
      * 配置跨源访问(CORS)

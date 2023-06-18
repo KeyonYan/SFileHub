@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import './loginPage.css';
 import { useNavigate } from 'react-router-dom';
 import { login, hello } from '../../api/index';
+import { useStore } from '../../main';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const setUserName = useStore(state => state.setUserName);
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
-    login({ username: values.username, password: values.password}).then(res => {
+    login({ username: values.username, password: values.password, remember: values.remember}).then(res => {
         console.log(res);
         if (res.code === 200) {
+          setUserName(values.username);
           navigate('/home');
         } else {
           alert(res.msg);

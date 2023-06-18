@@ -1,9 +1,11 @@
 import React from 'react';
+import { useStore } from '../../main';
 
 const LoginPage: React.FC = () => {
+  const userName = useStore(state => state.userName);
   return (
     <div>
-        Home Page
+        Welcome Home Page, {userName}
     </div>
   );
 };

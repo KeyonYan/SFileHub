@@ -3,6 +3,7 @@ import { Service } from "./request"
 interface LoginParams {
     username: string;
     password: string;
+    remember: boolean;
 }
 
 export function login(params: LoginParams) {
@@ -14,7 +15,7 @@ export function login(params: LoginParams) {
 
 export function hello() {
     return Service({
-        url: "/api/hello",
+        url: "/api/user/hello",
         method: 'GET'
     })
 }
