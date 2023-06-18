@@ -1,9 +1,9 @@
 import { useStore } from '../../main';
 import React from 'react';
-import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Button, Dropdown, Space } from 'antd';
+import { Dropdown, Switch } from 'antd';
 import { useState } from 'react';
+
 
 const items: MenuProps['items'] = [
     {
@@ -15,6 +15,17 @@ const items: MenuProps['items'] = [
         key: '0',
     },
     {
+      label: (
+        <>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+              🔆
+          </a>
+          <Switch onClick={(_, e) => e.stopPropagation()} checkedChildren="Light" unCheckedChildren="Dark" defaultChecked />
+        </>
+        ),
+        key: '1',
+    },
+    {
         type: 'divider',
     },
     {
@@ -23,7 +34,7 @@ const items: MenuProps['items'] = [
           ⚙️ Settings
         </a>
       ),
-      key: '1',
+      key: '2',
     },
     {
       label: (
@@ -31,7 +42,7 @@ const items: MenuProps['items'] = [
           ⭕ Sign Out
         </a>
       ),
-      key: '2',
+      key: '3',
     },
   ];
 
@@ -40,8 +51,8 @@ const UserMenu: React.FC = () => {
     const userName: string = useStore(state => state.userName);
     return (
         <div className="lg:flex lg:flex-1 lg:justify-end text-sm font-semibold leading-6 text-gray-900">
-            <Dropdown menu={{ items }} placement='bottomRight'>
-                <div>
+            <Dropdown menu={{ items }} placement='bottomRight' trigger={['hover']}>
+                <div onClick={(e) => e.preventDefault()}>
                     {userName}
                 </div>
             </Dropdown>
