@@ -12,6 +12,7 @@ import {
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import React from 'react'
 import { useStore } from '../../main';
+import { useNavigate } from 'react-router-dom';
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -30,11 +31,12 @@ function classNames(...classes: string[]) {
 }
 
 const ModuleMenu: React.FC = () => {
+    const navigate = useNavigate();
     return (
         <>
             <Popover.Group className="hidden lg:flex lg:gap-x-12">
                 <Popover className="relative">
-                    <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
+                    <Popover.Button onClick={() => navigate('home/dataset')} className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
                     Dataset
                     <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
                     </Popover.Button>
@@ -84,11 +86,14 @@ const ModuleMenu: React.FC = () => {
                     </Transition>
                 </Popover>
 
-                <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+                <a href="#" onClick={() => navigate('home/software')} className="text-sm font-semibold leading-6 text-gray-900">
                     Algorithm&Software
                 </a>
-                <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+                <a href="#" onClick={() => navigate('home/hardware')}  className="text-sm font-semibold leading-6 text-gray-900">
                     Hardware&Platform
+                </a>
+                <a href="#" onClick={() => navigate('home/upload')} className="text-sm font-semibold leading-6 text-gray-900">
+                    FileUpload
                 </a>
                 </Popover.Group>
         </>

@@ -16,7 +16,6 @@ import UserMenu from '../userMenu/userMenu';
 import ModuleMenu from '../moduleMenu/moduleMenu'
 import IconView from '../iconView/iconView'
 import SearchView from '../searchView/searchView'
-
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
   { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
