@@ -11,7 +11,7 @@ export default defineConfig({
       https: false,
       proxy: {
         "/api": {
-          target: "http://localhost:9999/sfilehub",
+          target: "http://localhost:9999/",
           changeOrigin: true,
           rewrite: path => path.replace(/^\/api/, ""),
         },
