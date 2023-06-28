@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 public class Result<T> {
-    private Integer code;
+    private ResultEnum code;
     private String msg;
     private T data;
 }
