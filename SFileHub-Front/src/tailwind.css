@@ -2,9 +2,9 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-.ant-btn-icon {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+@layer base {
+    svg {
+        display: inline;
+        vertical-align: baseline;
+    }
 }

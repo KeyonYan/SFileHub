@@ -33,8 +33,6 @@ function classNames(...classes: string[]) {
 }
 
 const NavBar: React.FC = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const userName: string = useStore(state => state.userName);
   return (
     <header className="bg-white w-full">

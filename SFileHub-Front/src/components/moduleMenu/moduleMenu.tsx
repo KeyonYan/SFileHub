@@ -36,7 +36,7 @@ const ModuleMenu: React.FC = () => {
         <>
             <Popover.Group className="hidden lg:flex lg:gap-x-12">
                 <Popover className="relative">
-                    <Popover.Button onClick={() => navigate('home/dataset')} className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
+                    <Popover.Button onClick={() => navigate('dataset')} className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
                     Dataset
                     <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
                     </Popover.Button>
@@ -86,13 +86,13 @@ const ModuleMenu: React.FC = () => {
                     </Transition>
                 </Popover>
 
-                <a href="#" onClick={() => navigate('home/software')} className="text-sm font-semibold leading-6 text-gray-900">
+                <a href="#" onClick={() => navigate('software')} className="text-sm font-semibold leading-6 text-gray-900">
                     Algorithm&Software
                 </a>
-                <a href="#" onClick={() => navigate('home/hardware')}  className="text-sm font-semibold leading-6 text-gray-900">
+                <a href="#" onClick={() => navigate('hardware')}  className="text-sm font-semibold leading-6 text-gray-900">
                     Hardware&Platform
                 </a>
-                <a href="#" onClick={() => navigate('home/upload')} className="text-sm font-semibold leading-6 text-gray-900">
+                <a href="#" onClick={() => navigate('upload')} className="text-sm font-semibold leading-6 text-gray-900">
                     FileUpload
                 </a>
                 </Popover.Group>

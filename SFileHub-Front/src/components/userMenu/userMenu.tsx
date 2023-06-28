@@ -46,14 +46,36 @@ const items: MenuProps['items'] = [
     },
   ];
 
+const UserInfo: React.FC = () => {
+  const userName: string = useStore(state => state.userName);
+  const userRole: string = useStore(state => state.userRole);
+  if (userRole === '管理员') {
+    return (
+      <>
+        🐲 {userName}
+      </>
+    )
+  } else if (userRole === '普通用户') {
+    return (
+      <>
+        🐱 {userName}
+      </>
+    )
+  } else {
+    return (
+      <>
+        ⚠️ {userName}
+      </>
+    )
+  }
+}
+
 const UserMenu: React.FC = () => {
-    const [userMenuOpen, setUserMenuOpen] = useState(false)
-    const userName: string = useStore(state => state.userName);
     return (
         <div className="lg:flex lg:flex-1 lg:justify-end text-sm font-semibold leading-6 text-gray-900">
             <Dropdown menu={{ items }} placement='bottomRight' trigger={['hover']}>
                 <div onClick={(e) => e.preventDefault()}>
-                    {userName}
+                    <UserInfo/>
                 </div>
             </Dropdown>
         </div>
