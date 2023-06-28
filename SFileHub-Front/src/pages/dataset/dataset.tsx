@@ -13,8 +13,8 @@ const getHandle = () => {
 const putHandle = () => {
     const res = put();
     res.then((res) => {
-        alert(res);
-        console.log(res);
+        alert(res.msg);
+        console.log(res.msg);
     })
 }
 

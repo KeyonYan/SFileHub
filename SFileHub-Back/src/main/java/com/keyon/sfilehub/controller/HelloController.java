@@ -1,14 +1,11 @@
 package com.keyon.sfilehub.controller;
 
-import com.keyon.sfilehub.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import com.keyon.sfilehub.exception.ParameterException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/hello")
+public class HelloController {
 
 //    private StringRedisTemplate stringRedisTemplate;
 //
@@ -16,7 +13,7 @@ public class UserController {
 //        this.stringRedisTemplate = stringRedisTemplate;
 //    }
 
-    @GetMapping("/hello")
+    @GetMapping("/get")
     public String hello() {
 //        stringRedisTemplate.opsForValue().set("hello", "world");
         return "Hello World!";
@@ -24,7 +21,12 @@ public class UserController {
 
     @PutMapping("/put")
     public String put() {
-        return "put request";
+        throw new ParameterException("Parameter Exception");
+    }
+
+    @PostMapping("/post")
+    public String post() {
+        return "post request";
     }
 
 }

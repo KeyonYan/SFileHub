@@ -1,8 +1,11 @@
 package com.keyon.sfilehub.config;
 
 import com.alibaba.fastjson2.JSON;
+import com.keyon.sfilehub.exception.BusinessException;
+import com.keyon.sfilehub.exception.PermissionException;
 import com.keyon.sfilehub.service.UserService;
 import com.keyon.sfilehub.util.ResultUtil;
+import com.keyon.sfilehub.vo.ResultEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -77,7 +80,7 @@ public class SecurityConfig {
         jsonLoginFilter.setAuthenticationFailureHandler((req, rsp, e) -> {
             rsp.setContentType("application/json;charset=utf-8");
             PrintWriter out = rsp.getWriter();
-            out.write(JSON.toJSONString(ResultUtil.loginFailed()));
+            out.write(JSON.toJSONString(ResultUtil.fail(ResultEnum.LOGIN_FAILED)));
             out.flush();
             out.close();
         });
@@ -99,7 +102,7 @@ public class SecurityConfig {
                 .authenticationEntryPoint((req, resp, authException) -> { // 未登录直接返回给前端JSON数据，而不是后端重定向
                     resp.setContentType("application/json;charset=utf-8");
                     PrintWriter out = resp.getWriter();
-                    out.write(JSON.toJSONString(ResultUtil.loginRequired()));
+                    out.write(JSON.toJSONString(ResultUtil.fail(ResultEnum.LOGIN_REQUIRED)));
                     out.flush();
                     out.close();
                 });
