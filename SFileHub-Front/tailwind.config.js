@@ -3,7 +3,7 @@ export const content = [
   "./src/pages/**/*.{js,jsx,ts,tsx}",
   "./src/components/**/*.{js,jsx,ts,tsx}"
 ];
-export const darkMode = false;
+// export const darkMode = false;
 export const theme = {
   extend: {
     colors: {

@@ -1,5 +1,5 @@
 import React from "react";
-import { get, put, post } from "../../api/index";
+import { get, put, post } from "@/api/index";
 import { Button } from "antd"
 
 const getHandle = () => {

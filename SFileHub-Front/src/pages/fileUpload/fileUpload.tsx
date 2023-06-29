@@ -2,8 +2,8 @@ import React from "react";
 import type { UploadProps } from 'antd';
 import { Button, Upload, Divider, Form, InputNumber, Switch, Input } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { upload } from "../../api/index";
-import { useStore } from "../../main";
+import { upload } from "@/api/index";
+import { useStore } from "@/main";
 
 const FileUpload: React.FC = () => {
   const userName = useStore(state => state.userName);
