@@ -37,22 +37,6 @@ public class FileStorageService {
     private String baseFileSavePath;
 
     public boolean uploadFile(FileChunkDto dto, User user) {
-        if (dto.getChunkFile() == null) {
-            throw new ParameterException("文件不能为空");
-        }
-        if (dto.getIdentifier() == null) {
-            throw new ParameterException("文件标识不能为空");
-        }
-        if (dto.getChunkNumber() == null || dto.getChunkNumber() < 1) {
-            throw new ParameterException("文件块序号不能为空或必须从1开始");
-        }
-        if (dto.getChunkSize() == null || dto.getChunkSize() <= 0) {
-            throw new ParameterException("文件块大小不能为空或必须大于0");
-        }
-        if (dto.getTotalChunks() == null || dto.getTotalChunks() <= 0) {
-            throw new ParameterException("文件块总数不能为空或必须大于0");
-        }
-
         CheckResultVo vo = fileChunkService.check(dto);
         if (vo.getUploaded()) {
             return true;

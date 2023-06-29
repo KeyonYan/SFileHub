@@ -11,6 +11,7 @@ import com.keyon.sfilehub.vo.CheckResultVo;
 import com.keyon.sfilehub.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,12 +32,12 @@ public class FileController {
     private UserService userService;
 
     @GetMapping("/uploadCheck")
-    public Result<CheckResultVo> checkUpload(FileChunkDto dto) {
+    public Result<CheckResultVo> checkUpload(@Validated FileChunkDto dto) {
         return ResultUtil.success(fileChunkService.check(dto));
     }
 
     @PostMapping("/upload")
-    public Result<Boolean> upload(FileChunkDto fileChunkDto, Principal principal) {
+    public Result<Boolean> upload(@Validated FileChunkDto fileChunkDto, Principal principal) {
         User user = userService.findByUsername(principal.getName());
         if (user == null) {
             throw new BusinessException("用户不存在");
