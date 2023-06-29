@@ -4,13 +4,13 @@ import './index.css'
 import './tailwind.css'
 import { create } from 'zustand'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import LoginPage from '@/pages/login/loginPage';
-import HomePage from '@/pages/home/homePage';
-import ErrorPage from '@/pages/error/errorPage';
-import DatasetPage from '@/pages/dataset/dataset';
-import SoftwarePage from '@/pages/software/software';
-import HardwarePage from '@/pages/hardware/hardware';
-import FileUploadPage from './pages/fileupload/fileUpload'
+import LoginPage from '@/pages/login/LoginPage';
+import HomePage from '@/pages/home/HomePage';
+import ErrorPage from '@/pages/error/ErrorPage';
+import DatasetPage from '@/pages/dataset/DatasetPage';
+import SoftwarePage from '@/pages/software/SoftwarePage';
+import HardwarePage from '@/pages/hardware/HardwarePage';
+import FileUploadPage from './pages/fileUpload/FileUpload'
 
 export const useStore = create(set => ({
   userName: "Unknown User",
