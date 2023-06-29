@@ -35,9 +35,13 @@ export function post() {
     })
 }
 
-export function upload(params: any) {
+export function upload(params: JSON) {
     return Service({
         url: "/api/file/upload",
         data: params,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
     })
 }

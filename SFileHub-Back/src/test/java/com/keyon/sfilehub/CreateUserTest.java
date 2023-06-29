@@ -30,20 +30,42 @@ public class CreateUserTest {
     public void addRole() {
         Role role = Role.builder().title("ROLE_ADMIN").label("管理员").intro("最高权限者").enable(true).build();
         roleDao.save(role);
+        role = Role.builder().title("ROLE_USER").label("用户").intro("普通用户").enable(true).build();
+        roleDao.save(role);
     }
 
     @Test
-    public void addUser() {
-        User user = User.builder().username("admin").password(passwordEncoder.encode("123456")).build();
+    public void addAdmin() {
+        User user = User.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("123456"))
+                .enabled(true)
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .build();
+        Role adminRole = roleDao.findByTitle("ROLE_ADMIN");
+        Role userRole = roleDao.findByTitle("ROLE_USER");
+        Set<Role> roles = new HashSet<>();
+        roles.add(adminRole);
+        roles.add(userRole);
+        user.setRoles(roles);
         userDao.save(user);
     }
 
     @Test
-    public void setAdminRole() {
-        Role role = roleDao.findByTitle("ROLE_ADMIN");
+    public void addUser() {
+        User user = User.builder()
+                .username("user")
+                .password(passwordEncoder.encode("123456"))
+                .enabled(true)
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .build();
         Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        User user = userDao.findByUsername("admin");
+        Role userRole = roleDao.findByTitle("ROLE_USER");
+        roles.add(userRole);
         user.setRoles(roles);
         userDao.save(user);
     }

@@ -30,4 +30,8 @@ public class UserService implements UserDetailsService {
         if (user == null) throw new UsernameNotFoundException("用户名不存在");
         return user;
     }
+
+    public User findByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
 }

@@ -1,6 +1,5 @@
 server:
   port: 9999
-
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -10,6 +9,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update # update database when entity change
+#      ddl-auto: create # create database when entity change
       dialect: org.hibernate.dialect.MySQL8InnoDBDialect
     show-sql: true
     open-in-view: false # mean: disable lazy load

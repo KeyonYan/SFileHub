@@ -8,13 +8,12 @@ import { useStore } from "../../main";
 const FileUpload: React.FC = () => {
   const userName = useStore(state => state.userName);
   const [config, contentHelper] = useUploadConfig({
-    url: 'http://localhost:9999/sfilehub/file/upload',
     // retry: { count: 1, delay: 3000 },
     isChunk: true,
     chunkSize: 100 * 1024,
   });
 
-  const { chunkSize, isChunk, retry } = config;
+  const { chunkSize, isChunk } = config;
 
   const getTotalChunks = (file: File) => Math.ceil(file.size / chunkSize);
   const getChunkData = (file: File, chunkIndex: number) => {
@@ -24,51 +23,34 @@ const FileUpload: React.FC = () => {
   };
 
   const customRequest: UploadProps['customRequest'] = async (options) => {
-    const { onProgress, onError, onSuccess, action, headers } = options;
-
-    const rawFile = options.file as File; // fix type error
-    const file = new File([rawFile], rawFile.name ?? 'ant-design.jpeg', {
-      type: rawFile?.type ?? 'image/jpeg',
-    });
-
+    const { onProgress, onError, onSuccess, file } = options;
     const totalChunks = isChunk ? getTotalChunks(file as File) : 1;
-
+    console.log("totalChunks: ", totalChunks);
     let uploadedChunks = 0;
     let isSuccess = true;
 
-    for (let i = 1; i <= totalChunks; i++) {
-      const chunkData = getChunkData(file as File, i-1);
-      const formData = new FormData();
-      formData.append('chunkFile', chunkData);
-      formData.append('filename', file.name);
-      formData.append('chunkNumber', i.toString());
-      formData.append('chunkSize', chunkSize);
-      formData.append('totalChunks', totalChunks.toString());
-      formData.append('currentChunkSize', file.size.toString());
-      formData.append('totalSize', file.size.toString());
-      formData.append('identifier', file.name); // use md5 as identifier
-      formData.append('createBy', userName)
-
-      const fetchOptions: FetchWithRetryOptions = {
-        method: 'POST',
-        body: formData,
-        headers,
-        // retry,
-        credentials: 'include',
-        mode: 'no-cors'
-      };
-
+    for (let i = 0; i < totalChunks; i++) {
+      const chunkData = getChunkData(file as File, i);
+      console.log(chunkData);
+      const postParams = {
+        filename: file.name,
+        chunkNumber: (i+1).toString(),
+        chunkSize: chunkSize.toString(),
+        currentChunkSize: file.size.toString(),
+        totalSize: file.size.toString(),
+        totalChunks: totalChunks.toString(),
+        identifier: file.name as string, // use md5 as identifier
+        chunkFile: chunkData as Blob
+      }
       try {
-        // const result = await fetchWithRetry(action, fetchOptions);
-        const result = upload(formData);
-        // debugger log
+        const result = await upload(postParams);
         console.log({ result });
-        if (['done', 'success'].includes(result?.msg) || result?.code === 200) {
+        if (result?.code === 0) {
           uploadedChunks++;
           onProgress?.({ percent: (uploadedChunks / totalChunks) * 100 });
         } else {
           isSuccess = false;
-          onError?.(result.message);
+          onError?.(result.msg);
           break;
         }
       } catch (error) {
@@ -82,13 +64,13 @@ const FileUpload: React.FC = () => {
   };
 
   return (
-    <>
+    <div>
       {contentHelper}
-      <Divider orientation="left">Preview</Divider>
-      <Upload action={config.url} customRequest={customRequest}>
+      <Divider orientation="center">Preview</Divider>
+      <Upload customRequest={customRequest}>
         <Button icon={<UploadOutlined />}>Click to Upload</Button>
       </Upload>
-    </>
+    </div>
   );
 };
 
@@ -128,7 +110,12 @@ async function fetchWithRetry(url: string, options?: FetchWithRetryOptions): Pro
   throw error;
 }
 
-function useUploadConfig(config: any) {
+type Config = {
+  isChunk: boolean;
+  chunkSize: number;
+}
+
+function useUploadConfig(config: Config) {
   const [state, setState] = React.useState(config);
   const [form] = Form.useForm();
 
@@ -142,9 +129,6 @@ function useUploadConfig(config: any) {
 
   const contentHelper = (
     <Form form={form} initialValues={state} onValuesChange={(_, allValues) => setState(allValues)}>
-      <Form.Item label="Url" name="url">
-        <Input />
-      </Form.Item>
       <Form.Item label="IsChunk" name="isChunk" valuePropName='checked'>
         <Switch />
       </Form.Item>

@@ -2,13 +2,10 @@ import axios from 'axios'
 // axios.defaults.withCredentials = true
 
 export const Service = axios.create({
-    // headers: {
-    //     "Content-Type": "application/json"
-    // },
     timeout: 3000,
 })
 
-Service.defaults.headers.post['Content-Type'] = "application/json";
+// Service.defaults.headers.post['Content-Type'] = "application/json";
 
 // 添加一个请求拦截器
 Service.interceptors.request.use(function(config) {

@@ -36,8 +36,8 @@ public class RedisPersistentRe implements PersistentTokenRepository {
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
         hashOperations.putAll(key, hashMap);
 //        redisTemplate.expire(key, 7, TimeUnit.DAYS); // 免登录时间为7天
-        redisTemplate.expire(key, 60, TimeUnit.SECONDS);
-        stringRedisTemplate.opsForValue().set(usernameKey, series, 60, TimeUnit.SECONDS);
+        redisTemplate.expire(key, 60*5, TimeUnit.SECONDS);
+        stringRedisTemplate.opsForValue().set(usernameKey, series, 60*5, TimeUnit.SECONDS);
     }
 
     private void deleteIfPresent(String key) {

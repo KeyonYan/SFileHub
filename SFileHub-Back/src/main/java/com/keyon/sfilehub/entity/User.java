@@ -25,14 +25,17 @@ import java.util.stream.Collectors;
 public class User extends BaseEntity implements UserDetails, CredentialsContainer {
     private static final long serialVersionUID = -2345678901234567890L;
 
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
+    private boolean enabled; // 账号是否可用
     private boolean accountNonExpired; // 账号是否过期
     private boolean accountNonLocked; // 账号是否锁定
     private boolean credentialsNonExpired; // 账号凭证是否过期
-    private boolean enabled; // 账号是否可用
-    private Date loginTime; // 最后登录时间
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST) // 立即从数据库中进行加载数据
+    private Date lastLoginTime; // 最后登录时间
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE) // 立即从数据库中进行加载数据
+    @Column(nullable = false)
     private Set<Role> roles;
 
     /**
