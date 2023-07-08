@@ -7,10 +7,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import LoginPage from '@/pages/login/LoginPage';
 import HomePage from '@/pages/home/HomePage';
 import ErrorPage from '@/pages/error/ErrorPage';
-import DatasetPage from '@/pages/dataset/DatasetPage';
-import SoftwarePage from '@/pages/software/SoftwarePage';
-import HardwarePage from '@/pages/hardware/HardwarePage';
 import FileUploadPage from './pages/fileUpload/FileUpload'
+import FileDownloadPage from '@/pages/fileDownload/FileDownload'
 
 export const useStore = create(set => ({
   userName: "Unknown User",
@@ -25,10 +23,8 @@ const router = createBrowserRouter([
     path: '/home',
     element: <HomePage/>,
     children: [
-      { path: '/home', element: <DatasetPage/>},
-      { path: '/home/software', element: <SoftwarePage/>},
-      { path: '/home/hardware', element: <HardwarePage/>},
-      { path: '/home/upload', element: <FileUploadPage/>},
+      { path: '/home', element: <FileUploadPage/>},
+      { path: '/home/download', element: <FileDownloadPage/>},
     ]
   },
   { path: '/*', element: <ErrorPage/>}
