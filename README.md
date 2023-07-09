@@ -1,8 +1,16 @@
 # SFileHub
-[![Java CI with Maven]](https://github.com/KeyonYan/SFileHub/workflows/Java CI with Maven/badge.svg)
+
+[![Java CI with Maven]]()
+
+```text
+[![Build](https://github.com/KeyonYan/SFileHub/workflows/Java CI with Maven/badge.svg)]
+```
+
+
+
 前端技术：
 
-`React` `Vite` `TypeScript` 
+`React` `Vite` `TypeScript`
 
 UI：`Tailwind` `AndDesign`
 
