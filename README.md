@@ -1,11 +1,6 @@
 # SFileHub
 
-[![Java CI with Maven]]()
-
-```text
-[![Build](https://github.com/KeyonYan/SFileHub/workflows/Java CI with Maven/badge.svg)]
-```
-
+![1688902024405](https://github.com/KeyonYan/SFileHub/workflows/Java CI with Maven/badge.svg)
 
 
 前端技术：
