@@ -1,6 +1,6 @@
 # SFileHub
 
-![1688902024405](https://github.com/KeyonYan/SFileHub/workflows/Java CI with Maven/badge.svg)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/KeyonYan/SFileHub/Java%20CI%20with%20Maven)
 
 
 前端技术：
