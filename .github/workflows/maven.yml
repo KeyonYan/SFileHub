@@ -11,8 +11,12 @@ name: Java CI with Maven
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'SFileHub-Back/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'SFileHub-Back/**'
 
 jobs:
   build:
