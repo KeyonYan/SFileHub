@@ -2,6 +2,8 @@
 
 [![](https://github.com/KeyonYan/SFileHub/workflows/Java%20CI%20with%20Maven/badge.svg)](https://github.com/KeyonYan/SFileHub/actions/workflows/maven.yml)
 
+[![](https://github.com/KeyonYan/SFileHub/workflows/Node.js%20CI/badge.svg)](https://github.com/KeyonYan/SFileHub/actions/workflows/node.yml)
+
 
 前端技术：
 
