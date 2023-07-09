@@ -1,6 +1,6 @@
 # SFileHub
 
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/KeyonYan/SFileHub/Java%20CI%20with%20Maven)
+[![](https://github.com/KeyonYan/SFileHub/workflows/Java%20CI%20with%20Maven/badge.svg)](https://github.com/KeyonYan/SFileHub/actions/workflows/maven.yml)
 
 
 前端技术：
