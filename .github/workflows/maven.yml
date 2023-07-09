@@ -27,6 +27,23 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
         cache: maven
+      
+    - name: Set up MySql
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        host port: 3306
+        character set server: 'utf-8'
+        collation server: 'utf8_general_ci'
+        mysql version: '8.0'
+        mysql database: 'sfilehub'
+        mysql root password: ${{ secrets.RootPassword }}
+        
+    - name: Set up Redis
+      uses: zhulik/redis-action@1.1.0
+      with:
+        redis version: '5'
+        number of databases: 100
+    
     - name: Build with Maven
       run: mvn -B package --file SFileHub-Back/pom.xml
 
