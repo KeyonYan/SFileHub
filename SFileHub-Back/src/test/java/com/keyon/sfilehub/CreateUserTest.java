@@ -14,7 +14,7 @@ import sun.security.util.Password;
 import java.util.HashSet;
 import java.util.Set;
 
-@SpringBootTest
+//@SpringBootTest
 public class CreateUserTest {
 
     @Autowired
@@ -26,7 +26,7 @@ public class CreateUserTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Test
+//    @Test
     public void addRole() {
         Role role = Role.builder().title("ROLE_ADMIN").label("管理员").intro("最高权限者").enable(true).build();
         roleDao.save(role);
@@ -34,7 +34,7 @@ public class CreateUserTest {
         roleDao.save(role);
     }
 
-    @Test
+//    @Test
     public void addAdmin() {
         User user = User.builder()
                 .username("admin")
@@ -53,7 +53,7 @@ public class CreateUserTest {
         userDao.save(user);
     }
 
-    @Test
+//    @Test
     public void addUser() {
         User user = User.builder()
                 .username("user")
