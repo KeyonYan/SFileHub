@@ -7,7 +7,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import LoginPage from '@/pages/login/LoginPage';
 import HomePage from '@/pages/home/HomePage';
 import ErrorPage from '@/pages/error/ErrorPage';
-import FileUploadPage from './pages/fileUpload/FileUpload'
+import FileUploadPage from '@/pages/fileUpload/FileUpload'
 import FileDownloadPage from '@/pages/fileDownload/FileDownload'
 
 interface UserState {
