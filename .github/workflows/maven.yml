@@ -32,7 +32,7 @@ jobs:
       uses: mirromutth/mysql-action@v1.1
       with:
         mysql version: '8.0'
-        mysql database: 'sfilehub'
+        mysql database: 'sfile_hub'
         mysql root password: ${{ secrets.RootPassword }}
         
     - name: Set up Redis
