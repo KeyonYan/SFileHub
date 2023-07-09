@@ -5,8 +5,8 @@ name: Node.js CI
 
 on:
   push:
-    paths:
-      - 'SFileHub-Front/**'
+#     paths:
+#       - 'SFileHub-Front/**'
     branches: [ "main" ]
   pull_request:
     paths:
@@ -17,7 +17,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./SFileHub-Front/
     strategy:
       matrix:
         node-version: [14.18.0]
@@ -25,12 +27,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - run: cd SFileHub-Front
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: './SFileHub-Front/package-lock.json'
     - run: npm ci
     - run: npm run build --if-present
 #     - run: npm test
