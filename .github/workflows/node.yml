@@ -5,8 +5,12 @@ name: Node.js CI
 
 on:
   push:
+    paths:
+      - 'SFileHub-Front/**'
     branches: [ "main" ]
   pull_request:
+    paths:
+      - 'SFileHub-Front/**'
     branches: [ "main" ]
 
 jobs:
@@ -20,8 +24,8 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - run: cd SFileHub-Front
     - uses: actions/checkout@v3
+    - run: cd SFileHub-Front
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
