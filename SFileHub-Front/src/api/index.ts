@@ -34,8 +34,17 @@ export function post() {
         method: 'POST'
     })
 }
-
-export function upload(params: JSON) {
+interface UploadParams {
+    filename: string;
+    chunkNumber: number;
+    chunkSize: number;
+    currentChunkSize: number;
+    totalSize: number;
+    totalChunks: number;
+    identifier: string;
+    chunkFile: Blob;
+}
+export function upload(params: UploadParams) {
     return Service({
         url: "/api/file/upload",
         data: params,

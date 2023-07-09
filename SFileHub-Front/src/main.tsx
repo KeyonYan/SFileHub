@@ -10,7 +10,14 @@ import ErrorPage from '@/pages/error/ErrorPage';
 import FileUploadPage from './pages/fileUpload/FileUpload'
 import FileDownloadPage from '@/pages/fileDownload/FileDownload'
 
-export const useStore = create(set => ({
+interface UserState {
+  userName: string;
+  userRole: string;
+  setUserName: (newVal: string) => void;
+  setUserRole: (newVal: string) => void;
+}
+
+export const useStore = create<UserState>()((set) => ({
   userName: "Unknown User",
   userRole: "",
   setUserName: (newVal: string) => set({ userName: newVal }),

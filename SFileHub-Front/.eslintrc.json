@@ -24,6 +24,7 @@
     "plugins":["react"],
     "rules":{
     "linebreak-style":["error","unix"],
+    "@typescript-eslint/no-explicit-any": ["off"],
     //"semi":["error","always"],
     "no-empty":0,
     "comma-dangle":0,

@@ -5,6 +5,12 @@ export const Service = axios.create({
     timeout: 3000,
 })
 
+declare module 'axios' {
+    interface AxiosInstance {
+        (config: AxiosRequestConfig): Promise<any>
+    }
+}
+
 // Service.defaults.headers.post['Content-Type'] = "application/json";
 
 // 添加一个请求拦截器

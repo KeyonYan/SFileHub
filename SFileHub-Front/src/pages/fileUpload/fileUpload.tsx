@@ -1,12 +1,10 @@
 import React from "react";
 import type { UploadProps } from 'antd';
-import { Button, Upload, Divider, Form, InputNumber, Switch, Input } from 'antd';
+import { Button, Upload, Divider, Form, InputNumber, Switch } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { upload } from "@/api/index";
-import { useStore } from "@/main";
 
 const FileUpload: React.FC = () => {
-  const userName = useStore(state => state.userName);
   const [config, contentHelper] = useUploadConfig({
     // retry: { count: 1, delay: 3000 },
     isChunk: true,
@@ -23,7 +21,8 @@ const FileUpload: React.FC = () => {
   };
 
   const customRequest: UploadProps['customRequest'] = async (options) => {
-    const { onProgress, onError, onSuccess, file } = options;
+    const { onProgress, onError, onSuccess } = options;
+    const file: File = options.file as File;
     const totalChunks = isChunk ? getTotalChunks(file as File) : 1;
     console.log("totalChunks: ", totalChunks);
     let uploadedChunks = 0;
@@ -34,11 +33,11 @@ const FileUpload: React.FC = () => {
       console.log(chunkData);
       const postParams = {
         filename: file.name,
-        chunkNumber: (i+1).toString(),
-        chunkSize: chunkSize.toString(),
-        currentChunkSize: file.size.toString(),
-        totalSize: file.size.toString(),
-        totalChunks: totalChunks.toString(),
+        chunkNumber: (i+1),
+        chunkSize: chunkSize,
+        currentChunkSize: file.size,
+        totalSize: file.size,
+        totalChunks: totalChunks,
         identifier: file.name as string, // use md5 as identifier
         chunkFile: chunkData as Blob
       }
@@ -74,41 +73,41 @@ const FileUpload: React.FC = () => {
   );
 };
 
-type RetryOptions = {
-  count: number;
-  delay: number;
-};
+// type RetryOptions = {
+//   count: number;
+//   delay: number;
+// };
 
-type FetchWithRetryOptions = {
-  retry?: number | RetryOptions;
-} & RequestInit;
+// type FetchWithRetryOptions = {
+//   retry?: number | RetryOptions;
+// } & RequestInit;
 
-async function fetchWithRetry(url: string, options?: FetchWithRetryOptions): Promise<any> {
-  const { retry, ...fetchOptions } = options || {};
+// async function fetchWithRetry(url: string, options?: FetchWithRetryOptions): Promise<any> {
+//   const { retry, ...fetchOptions } = options || {};
 
-  const retries = typeof retry === 'number' ? retry : retry?.count || 3;
-  const retryDelay = (typeof retry === 'object' && retry.delay) || 3000;
+//   const retries = typeof retry === 'number' ? retry : retry?.count || 3;
+//   const retryDelay = (typeof retry === 'object' && retry.delay) || 3000;
 
-  let error = null;
+//   let error = null;
 
-  for (let i = 0; i <= retries; i++) {
-    try {
-      const response = await fetch(url, fetchOptions);
-      const data = await response.json();
-      return { data, response };
-    } catch (e) {
-      error = e;
-    }
+//   for (let i = 0; i <= retries; i++) {
+//     try {
+//       const response = await fetch(url, fetchOptions);
+//       const data = await response.json();
+//       return { data, response };
+//     } catch (e) {
+//       error = e;
+//     }
 
-    if (i < retries) {
-      await new Promise((resolve) => {
-        setTimeout(resolve, retryDelay);
-      });
-    }
-  }
+//     if (i < retries) {
+//       await new Promise((resolve) => {
+//         setTimeout(resolve, retryDelay);
+//       });
+//     }
+//   }
 
-  throw error;
-}
+//   throw error;
+// }
 
 type Config = {
   isChunk: boolean;
