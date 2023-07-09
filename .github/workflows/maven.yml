@@ -31,9 +31,9 @@ jobs:
     - name: Set up MySql
       uses: mirromutth/mysql-action@v1.1
       with:
-        host port: 3306
         mysql version: '8.0'
         mysql database: 'sfilehub'
+        mysql root password: ${{ secrets.RootPassword }}
         
     - name: Set up Redis
       uses: zhulik/redis-action@1.1.0
