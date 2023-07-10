@@ -1,0 +1,20 @@
+#components-form-demo-normal-login .login-form {
+    max-width: 300px;
+}
+#components-form-demo-normal-login .login-form-forgot {
+    float: right;
+}
+#components-form-demo-normal-login .ant-col-rtl .login-form-forgot {
+    float: left;
+}
+#components-form-demo-normal-login .login-form-button {
+    width: 100%;
+}
+
+.login-page-color {
+    background-image: linear-gradient(90deg, rgb(116, 216, 252),rgb(156, 153, 254));
+}
+
+.login-page {
+    background-image: repeating-linear-gradient(90deg, hsla(196,0%,79%,0.06) 0px, hsla(196,0%,79%,0.06) 1px,transparent 1px, transparent 96px),repeating-linear-gradient(0deg, hsla(196,0%,79%,0.06) 0px, hsla(196,0%,79%,0.06) 1px,transparent 1px, transparent 96px),repeating-linear-gradient(0deg, hsla(196,0%,79%,0.09) 0px, hsla(196,0%,79%,0.09) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(90deg, hsla(196,0%,79%,0.09) 0px, hsla(196,0%,79%,0.09) 1px,transparent 1px, transparent 12px),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255));
+}
