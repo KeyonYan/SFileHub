@@ -1,7 +1,7 @@
 import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message } from 'antd';
-import './loginPage.css';
+import './LoginPage.css';
 import { useNavigate } from 'react-router-dom';
 import { login } from '@/api';
 import { useStore } from '@/main';
