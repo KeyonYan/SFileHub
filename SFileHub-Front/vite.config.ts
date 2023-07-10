@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [reactRefresh()],
   resolve: {
     alias: {
-      find: '/@',
+      find: '@',
       replacement: path.resolve(__dirname, './src'),
     }
   },
