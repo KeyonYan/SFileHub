@@ -1,8 +1,8 @@
 import React from 'react'
-import UserMenu from '@/components/userMenu/userMenu';
-import ModuleMenu from '@/components/moduleMenu/moduleMenu'
-import IconView from '@/components/iconView/iconView'
-import SearchView from '@/components/searchView/searchView'
+import UserMenu from '@/components/userMenu/UserMenu';
+import ModuleMenu from '@/components/moduleMenu/ModuleMenu'
+import IconView from '@/components/iconView/IconView'
+import SearchView from '@/components/searchView/SearchView'
 
 const NavBar: React.FC = () => {
   return (

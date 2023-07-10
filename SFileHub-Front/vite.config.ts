@@ -3,14 +3,14 @@ import reactRefresh from "@vitejs/plugin-react-refresh";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import path from "path";
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [reactRefresh()],
   resolve: {
     alias: {
-      find: '@',
-      replacement: path.resolve(__dirname, './src'),
-    }
+      '@': path.resolve(__dirname, 'src'),
+    },
   },
   server: {
       host: "localhost",
