@@ -4,11 +4,11 @@ import './index.css'
 import './tailwind.css'
 import { create } from 'zustand'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import LoginPage from '/@/pages/login/LoginPage';
-import HomePage from '/@/pages/home/HomePage';
-import ErrorPage from '/@/pages/error/ErrorPage';
-import FileUploadPage from '/@/pages/fileUpload/FileUpload'
-import FileDownloadPage from '/@/pages/fileDownload/FileDownload'
+import LoginPage from '@/pages/login/loginPage';
+import HomePage from '@/pages/home/homePage';
+import ErrorPage from '@/pages/error/errorPage';
+import FileUploadPage from '@/pages/fileUpload/fileUpload'
+import FileDownloadPage from '@/pages/fileDownload/FileDownload'
 
 interface UserState {
   userName: string;
