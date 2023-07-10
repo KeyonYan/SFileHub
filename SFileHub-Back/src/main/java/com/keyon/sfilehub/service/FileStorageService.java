@@ -64,16 +64,18 @@ public class FileStorageService {
                 .createBy(user)
                 .build();
         fileChunkService.save(fileChunk);
-        if (dto.getChunkNumber().equals(dto.getTotalChunks())) {
-            FileStorage fileStorage = FileStorage.builder()
-                    .fileName(dto.getFilename())
-                    .suffix(FileUtil.getSuffix(dto.getFilename()))
-                    .size(dto.getTotalSize())
-                    .identifier(dto.getIdentifier())
-                    .createBy(user)
-                    .build();
-            fileStorageDao.save(fileStorage);
-        }
+        if (vo.getUploadedChunks() == null) return uploadFlag;
+        int currentUploadedChunks = vo.getUploadedChunks().size() + (uploadFlag ? 1 : 0);
+        if (currentUploadedChunks < dto.getTotalChunks()) return uploadFlag;
+        // all chunk is uploaded, save fileStorage
+        FileStorage fileStorage = FileStorage.builder()
+                .fileName(dto.getFilename())
+                .suffix(FileUtil.getSuffix(dto.getFilename()))
+                .size(dto.getTotalSize())
+                .identifier(dto.getIdentifier())
+                .createBy(user)
+                .build();
+        fileStorageDao.save(fileStorage);
         return uploadFlag;
     }
 

@@ -12,6 +12,5 @@ import java.util.List;
 @Data
 public class CheckResultVo {
     private Boolean uploaded = false;
-    private String url;
     private List<Integer> uploadedChunks;
 }

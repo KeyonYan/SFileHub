@@ -1,4 +1,4 @@
-import { useStore } from '../../main';
+import { useStore } from '@/main';
 import React from 'react';
 import type { MenuProps } from 'antd';
 import { Dropdown, Switch } from 'antd';

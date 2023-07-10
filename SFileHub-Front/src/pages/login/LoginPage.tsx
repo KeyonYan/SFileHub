@@ -10,6 +10,7 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const setUserName = useStore(state => state.setUserName);
   const setUserRole = useStore(state => state.setUserRole);
+  const setIsLogin = useStore(state => state.setIsLogin);
   const [messageApi, contextHolder] = message.useMessage();
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
@@ -19,6 +20,7 @@ const LoginPage: React.FC = () => {
         if (res.code === 0) {
           setUserName(res.data.username);
           setUserRole(res.data.roles[0].label)
+          setIsLogin(true);
           navigate('/home');
         } else {
           messageApi.open({

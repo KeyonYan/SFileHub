@@ -22,11 +22,6 @@ public class FileChunkService {
             vo.setUploaded(false);
             return vo;
         }
-        FileChunk fileChunk = existChunks.get(0);
-        if (fileChunk.getTotalChunks() == 1) {
-            vo.setUploaded(true);
-            return vo;
-        }
         ArrayList<Integer> uploadedFiles = new ArrayList<>();
         for (FileChunk chunk : existChunks) {
             if (chunk.getChunkNumber() == dto.getChunkNumber())

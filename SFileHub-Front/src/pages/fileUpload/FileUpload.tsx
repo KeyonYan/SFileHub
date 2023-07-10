@@ -3,6 +3,7 @@ import type { UploadProps } from 'antd';
 import { Button, Upload, Divider, Form, InputNumber, Switch } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { upload } from "@/api/index";
+import SparkMD5 from "spark-md5";
 
 const FileUpload: React.FC = () => {
   const [config, contentHelper] = useUploadConfig({
@@ -24,9 +25,17 @@ const FileUpload: React.FC = () => {
     const { onProgress, onError, onSuccess } = options;
     const file: File = options.file as File;
     const totalChunks = isChunk ? getTotalChunks(file as File) : 1;
+    const spark = new SparkMD5.ArrayBuffer();
     console.log("totalChunks: ", totalChunks);
     let uploadedChunks = 0;
     let isSuccess = true;
+
+    const fileReader = new FileReader()
+    fileReader.readAsArrayBuffer(file)
+    fileReader.onload = (e) => {
+      spark.append(e.target?.result as ArrayBuffer);
+    }
+    const md5 = spark.end();
 
     for (let i = 0; i < totalChunks; i++) {
       const chunkData = getChunkData(file as File, i);
@@ -38,7 +47,7 @@ const FileUpload: React.FC = () => {
         currentChunkSize: file.size,
         totalSize: file.size,
         totalChunks: totalChunks,
-        identifier: file.name as string, // use md5 as identifier
+        identifier: md5, // use md5 as identifier
         chunkFile: chunkData as Blob
       }
       try {
