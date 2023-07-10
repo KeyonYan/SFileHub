@@ -1,5 +1,5 @@
 import React from 'react'
-import NavBar from '@/components/navBar/NavBar'
+import NavBar from '@/components/navBar/navBar'
 import { Layout} from 'antd';
 import { Outlet } from 'react-router-dom';
 
