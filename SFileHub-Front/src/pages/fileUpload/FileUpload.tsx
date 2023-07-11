@@ -22,7 +22,7 @@ const FileUpload: React.FC = () => {
   };
   const getFileMD5 = (file: File) => {
     return new Promise((resolve) => {
-      const blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
+      const blobSlice = File.prototype.slice;
       const spark = new SparkMD5.ArrayBuffer();
       const fileReader = new FileReader();
       const chunks = Math.ceil(file.size / chunkSize);
@@ -54,7 +54,7 @@ const FileUpload: React.FC = () => {
     let uploadedChunks = 0;
     let isSuccess = true;
 
-    const md5 = await getFileMD5(file);
+    const md5 = await getFileMD5(file) as string;
     for (let i = 0; i < totalChunks; i++) {
       const chunkData = getChunkData(file as File, i);
       console.log(chunkData);
