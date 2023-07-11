@@ -1,4 +1,8 @@
-# SFileHub
+<div align="center">
+
+<h1 style="border-bottom: none">
+    <b>SFileHub</b><br />
+</h1>
 
 <div align="center">
 
@@ -6,7 +10,6 @@
 [![](https://github.com/KeyonYan/SFileHub/workflows/Node.js%20CI/badge.svg)](https://github.com/KeyonYan/SFileHub/actions/workflows/node.yml)
 
 </div>
-
 
 前端技术：
 
@@ -24,7 +27,7 @@ UI：`Tailwind` `AndDesign`
 
 数据库：
 
-MySQL Redis
+`MySQL` `Redis`
 
 技术点：
 
