@@ -7,12 +7,12 @@ import SparkMD5 from "spark-md5";
 
 const FileUpload: React.FC = () => {
   const [config, contentHelper] = useUploadConfig({
-    // retry: { count: 1, delay: 3000 },
+    retry: { count: 1, delay: 3000 },
     isChunk: true,
     chunkSize: 100 * 1024,
   });
 
-  const { chunkSize, isChunk } = config;
+  const { chunkSize, isChunk, retry } = config;
 
   const getTotalChunks = (file: File) => Math.ceil(file.size / chunkSize);
   const getChunkData = (file: File, chunkIndex: number) => {
@@ -69,8 +69,8 @@ const FileUpload: React.FC = () => {
         chunkFile: chunkData as Blob
       }
       try {
-        const result = await upload(postParams);
-        console.log({ result });
+        // const result = await upload(postParams);
+        const result = await requestWithRetry(postParams, retry);
         if (result?.code === 0) {
           uploadedChunks++;
           onProgress?.({ percent: (uploadedChunks / totalChunks) * 100 });
@@ -103,43 +103,37 @@ const FileUpload: React.FC = () => {
   );
 };
 
-// type RetryOptions = {
-//   count: number;
-//   delay: number;
-// };
+type RetryOptions = {
+  count: number;
+  delay: number;
+};
 
-// type FetchWithRetryOptions = {
-//   retry?: number | RetryOptions;
-// } & RequestInit;
+const requestWithRetry = async (params: any, options?: RetryOptions): Promise<any> => {
+  const retryCount = options?.count || 3;
+  const retryDelay = options?.delay || 3000;
 
-// async function fetchWithRetry(url: string, options?: FetchWithRetryOptions): Promise<any> {
-//   const { retry, ...fetchOptions } = options || {};
+  let error = null;
 
-//   const retries = typeof retry === 'number' ? retry : retry?.count || 3;
-//   const retryDelay = (typeof retry === 'object' && retry.delay) || 3000;
+  for (let i = 0; i <= retryCount; i++) {
+    try {
+      const res = await upload(params);
+      if (res.code === 0) return res;
+    } catch (e) {
+      error = e;
+    }
 
-//   let error = null;
+    if (i < retryCount) {
+      await new Promise((resolve) => {
+        setTimeout(resolve, retryDelay);
+      });
+    }
+  }
 
-//   for (let i = 0; i <= retries; i++) {
-//     try {
-//       const response = await fetch(url, fetchOptions);
-//       const data = await response.json();
-//       return { data, response };
-//     } catch (e) {
-//       error = e;
-//     }
-
-//     if (i < retries) {
-//       await new Promise((resolve) => {
-//         setTimeout(resolve, retryDelay);
-//       });
-//     }
-//   }
-
-//   throw error;
-// }
+  throw error;
+}
 
 type Config = {
+  retry: RetryOptions,
   isChunk: boolean;
   chunkSize: number;
 }
