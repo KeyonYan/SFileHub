@@ -20,23 +20,41 @@ const FileUpload: React.FC = () => {
     const end = Math.min(start + chunkSize, file.size);
     return file.slice(start, end);
   };
+  const getFileMD5 = (file: File) => {
+    return new Promise((resolve) => {
+      const blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
+      const spark = new SparkMD5.ArrayBuffer();
+      const fileReader = new FileReader();
+      const chunks = Math.ceil(file.size / chunkSize);
+      let currentChunk = 0;
+      fileReader.onload = function (e) {
+        spark.append(e.target?.result as ArrayBuffer);
+        if (currentChunk < chunks) {
+          loadNext();
+          currentChunk++;
+        } else {
+          const md5 = spark.end();
+          resolve(md5);
+        }
+      };
+      const loadNext = () => {
+        const start = currentChunk * chunkSize;
+        const end = Math.min(start + chunkSize, file.size);
+        fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+      }
+      loadNext();
+    })
+  }
 
   const customRequest: UploadProps['customRequest'] = async (options) => {
     const { onProgress, onError, onSuccess } = options;
     const file: File = options.file as File;
     const totalChunks = isChunk ? getTotalChunks(file as File) : 1;
-    const spark = new SparkMD5.ArrayBuffer();
     console.log("totalChunks: ", totalChunks);
     let uploadedChunks = 0;
     let isSuccess = true;
 
-    const fileReader = new FileReader()
-    fileReader.onload = (e) => {
-      spark.append(e.target?.result as ArrayBuffer);
-    }
-    fileReader.readAsArrayBuffer(file)
-    const md5 = spark.end();
-
+    const md5 = await getFileMD5(file);
     for (let i = 0; i < totalChunks; i++) {
       const chunkData = getChunkData(file as File, i);
       console.log(chunkData);
@@ -69,6 +87,9 @@ const FileUpload: React.FC = () => {
     if (isSuccess) {
       onSuccess?.(file);
     }
+
+
+    
   };
 
   return (
