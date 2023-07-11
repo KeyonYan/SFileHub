@@ -31,10 +31,10 @@ const FileUpload: React.FC = () => {
     let isSuccess = true;
 
     const fileReader = new FileReader()
-    fileReader.readAsArrayBuffer(file)
     fileReader.onload = (e) => {
       spark.append(e.target?.result as ArrayBuffer);
     }
+    fileReader.readAsArrayBuffer(file)
     const md5 = spark.end();
 
     for (let i = 0; i < totalChunks; i++) {
