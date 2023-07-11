@@ -54,3 +54,10 @@ export function upload(params: UploadParams) {
         }
     })
 }
+
+export function queryFileList() {
+    return Service({
+        url: "/api/file/list",
+        method: 'GET'
+    })
+}

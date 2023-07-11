@@ -2,7 +2,8 @@ import React from "react";
 import type { UploadProps } from 'antd';
 import { Button, Upload, Divider, Form, InputNumber, Switch } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { upload } from "@/api/index";
+import { post, upload } from "@/api/index";
+import { ServiceWithRetry, RetryOptions } from "@/api/request";
 import SparkMD5 from "spark-md5";
 
 const FileUpload: React.FC = () => {
@@ -69,8 +70,7 @@ const FileUpload: React.FC = () => {
         chunkFile: chunkData as Blob
       }
       try {
-        // const result = await upload(postParams);
-        const result = await requestWithRetry(postParams, retry);
+        const result = await ServiceWithRetry(upload, retry, postParams);
         if (result?.code === 0) {
           uploadedChunks++;
           onProgress?.({ percent: (uploadedChunks / totalChunks) * 100 });
@@ -87,9 +87,6 @@ const FileUpload: React.FC = () => {
     if (isSuccess) {
       onSuccess?.(file);
     }
-
-
-    
   };
 
   return (
@@ -102,35 +99,6 @@ const FileUpload: React.FC = () => {
     </div>
   );
 };
-
-type RetryOptions = {
-  count: number;
-  delay: number;
-};
-
-const requestWithRetry = async (params: any, options?: RetryOptions): Promise<any> => {
-  const retryCount = options?.count || 3;
-  const retryDelay = options?.delay || 3000;
-
-  let error = null;
-
-  for (let i = 0; i <= retryCount; i++) {
-    try {
-      const res = await upload(params);
-      if (res.code === 0) return res;
-    } catch (e) {
-      error = e;
-    }
-
-    if (i < retryCount) {
-      await new Promise((resolve) => {
-        setTimeout(resolve, retryDelay);
-      });
-    }
-  }
-
-  throw error;
-}
 
 type Config = {
   retry: RetryOptions,
