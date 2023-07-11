@@ -1,4 +1,8 @@
-# SFileHub
+<div align="center">
+
+<h1 style="border-bottom: none">
+    <b>SFileHub</b><br />
+</h1>
 
 <div align="center">
 
@@ -7,6 +11,7 @@
 
 </div>
 
+---
 
 前端技术：
 
@@ -24,7 +29,7 @@ UI：`Tailwind` `AndDesign`
 
 数据库：
 
-MySQL Redis
+`MySQL` `Redis`
 
 技术点：
 
