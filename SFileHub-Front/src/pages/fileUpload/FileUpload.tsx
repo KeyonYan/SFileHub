@@ -2,7 +2,7 @@ import React from "react";
 import type { UploadProps } from 'antd';
 import { Button, Upload, Divider, Form, InputNumber, Switch } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { post, upload } from "@/api/index";
+import { upload } from "@/api/index";
 import { ServiceWithRetry, RetryOptions } from "@/api/request";
 import SparkMD5 from "spark-md5";
 
@@ -94,7 +94,7 @@ const FileUpload: React.FC = () => {
       {contentHelper}
       <Divider orientation="center">Preview</Divider>
       <Upload customRequest={customRequest}>
-        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+        <Button icon={<UploadOutlined/>}>Click to Upload</Button>
       </Upload>
     </div>
   );
