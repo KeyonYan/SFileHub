@@ -18,6 +18,7 @@ import java.util.Set;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Order(1)
 public class CreateUserTest {
 
     @Autowired
