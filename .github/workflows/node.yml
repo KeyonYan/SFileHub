@@ -5,13 +5,13 @@ name: Node.js CI
 
 on:
   push:
+    branches: [ "main", "dev" ]
     paths:
       - 'SFileHub-Front/**'
-    branches: [ "main" ]
   pull_request:
+    branches: [ "main" ]
     paths:
       - 'SFileHub-Front/**'
-    branches: [ "main" ]
 
 jobs:
   build:
