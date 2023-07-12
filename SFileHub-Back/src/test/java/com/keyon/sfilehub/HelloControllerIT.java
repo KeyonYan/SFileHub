@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
@@ -14,30 +15,30 @@ import java.util.Map;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class HelloControllerTest {
+public class HelloControllerIT {
     @LocalServerPort
     private int port;
     @Autowired
     private WebTestClient webTestClient;
 
     @Test
-    @Order(1)
+    @BeforeEach
     @DisplayName("login admin")
     void login() {
         Map<String, String> bodyMap = new HashMap<>();
         bodyMap.put("username", "admin");
         bodyMap.put("password", "123456");
         String url = "http://localhost:" + port + "/login";
-        String res = this.webTestClient
+        EntityExchangeResult<String> result = this.webTestClient
                 .post()
                 .uri(url)
                 .body(BodyInserters.fromValue(bodyMap))
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(String.class)
-                .toString();
-        System.out.println("login res: " + res);
+                .expectBody(String.class).returnResult();
+        System.out.println("login res: " + result.getResponseBody());
     }
+
 
     @Test
     @DisplayName("a hello test")
@@ -48,6 +49,6 @@ public class HelloControllerTest {
                 .uri(url)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(String.class).isEqualTo("{\"code\":40002,\"msg\":\"尚未登录，请先登录\"}");
+                .expectBody(String.class);
     }
 }

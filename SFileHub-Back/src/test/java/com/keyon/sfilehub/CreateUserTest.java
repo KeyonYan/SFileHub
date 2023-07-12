@@ -4,10 +4,7 @@ import com.keyon.sfilehub.dao.RoleDao;
 import com.keyon.sfilehub.dao.UserDao;
 import com.keyon.sfilehub.entity.Role;
 import com.keyon.sfilehub.entity.User;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +15,7 @@ import java.util.Set;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
 @Order(1)
 public class CreateUserTest {
 
