@@ -4,7 +4,6 @@ import com.keyon.sfilehub.dao.RoleDao;
 import com.keyon.sfilehub.dao.UserDao;
 import com.keyon.sfilehub.entity.Role;
 import com.keyon.sfilehub.entity.User;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -23,7 +22,7 @@ import java.util.Set;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class HelloControllerIT {
+public class HelloControllerTest {
     @LocalServerPort
     private int port;
     @Autowired
