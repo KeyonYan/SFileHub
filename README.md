@@ -4,6 +4,8 @@
     <b>SFileHub</b><br />
 </h1>
 
+</div>
+
 <div align="center">
 
 [![](https://github.com/KeyonYan/SFileHub/workflows/Java%20CI%20with%20Maven/badge.svg)](https://github.com/KeyonYan/SFileHub/actions/workflows/maven.yml)
