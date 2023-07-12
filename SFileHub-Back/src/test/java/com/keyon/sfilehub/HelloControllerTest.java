@@ -45,15 +45,18 @@ public class HelloControllerTest {
     @Test
     @Order(1)
     public void addRole() {
+        if (roleDao.findByTitle("ROLE_ADMIN") != null) return;
         Role role = Role.builder().title("ROLE_ADMIN").label("管理员").intro("最高权限者").enable(true).build();
         roleDao.save(role);
-        role = Role.builder().title("ROLE_USER").label("用户").intro("普通用户").enable(true).build();
-        roleDao.save(role);
+        if (roleDao.findByTitle("ROLE_USER") != null) return;
+        Role role2 = Role.builder().title("ROLE_USER").label("用户").intro("普通用户").enable(true).build();
+        roleDao.save(role2);
     }
 
     @Test
     @Order(2)
     public void addAdmin() {
+        if (userDao.findByUsername("admin") != null) return;
         User user = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("123456"))
@@ -74,6 +77,7 @@ public class HelloControllerTest {
     @Test
     @Order(2)
     public void addUser() {
+        if (userDao.findByUsername("user") != null) return;
         User user = User.builder()
                 .username("user")
                 .password(passwordEncoder.encode("123456"))
@@ -125,12 +129,12 @@ public class HelloControllerTest {
         EntityExchangeResult<String> resp = webTestClient
                 .get()
                 .uri(url)
-                .cookie("JSESSIONID", cookies.get("JSESSIONID").toString())
+                .cookie("JSESSIONID", cookies.get("JSESSIONID").get(0).getValue())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
                 .returnResult();
         String result = resp.getResponseBody();
-        System.out.println("hello: " + result);
+        Assertions.assertEquals(result, "Hello World!");
     }
 }
