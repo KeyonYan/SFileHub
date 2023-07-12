@@ -4,7 +4,10 @@ import com.keyon.sfilehub.dao.RoleDao;
 import com.keyon.sfilehub.dao.UserDao;
 import com.keyon.sfilehub.entity.Role;
 import com.keyon.sfilehub.entity.User;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,7 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.HashSet;
 import java.util.Set;
 
-//@SpringBootTest
+@SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CreateUserTest {
 
     @Autowired
@@ -25,7 +29,8 @@ public class CreateUserTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Test
+    @Test
+    @Order(1)
     public void addRole() {
         Role role = Role.builder().title("ROLE_ADMIN").label("管理员").intro("最高权限者").enable(true).build();
         roleDao.save(role);
@@ -33,7 +38,7 @@ public class CreateUserTest {
         roleDao.save(role);
     }
 
-//    @Test
+    @Test
     public void addAdmin() {
         User user = User.builder()
                 .username("admin")
@@ -52,7 +57,7 @@ public class CreateUserTest {
         userDao.save(user);
     }
 
-//    @Test
+    @Test
     public void addUser() {
         User user = User.builder()
                 .username("user")
