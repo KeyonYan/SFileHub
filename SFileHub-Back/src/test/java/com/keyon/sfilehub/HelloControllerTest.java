@@ -124,7 +124,7 @@ public class HelloControllerTest {
         EntityExchangeResult<String> resp = webTestClient
                 .get()
                 .uri(url)
-                .cookie("JSESSIONID", cookies.get("JSESSIONID").toString())
+                .cookie("JSESSIONID", cookies.get("[JSESSIONID]").toString())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
