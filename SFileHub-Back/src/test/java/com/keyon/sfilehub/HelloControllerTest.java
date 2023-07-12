@@ -40,7 +40,7 @@ public class HelloControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private MultiValueMap<String, ResponseCookie> cookies;
+    private static MultiValueMap<String, ResponseCookie> cookies;
 
     @Test
     @Order(1)
@@ -120,11 +120,12 @@ public class HelloControllerTest {
     @Order(4)
     @DisplayName("a hello test")
     void greetingTest() {
+        System.out.println("cookies key2: " + cookies.keySet());
         String url = "http://localhost:" + port + "/hello/get";
         EntityExchangeResult<String> resp = webTestClient
                 .get()
                 .uri(url)
-                .cookie("JSESSIONID", cookies.get("[JSESSIONID]").toString())
+                .cookie("JSESSIONID", cookies.get("JSESSIONID").toString())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(String.class)
