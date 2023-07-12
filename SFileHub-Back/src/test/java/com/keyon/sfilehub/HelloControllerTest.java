@@ -112,6 +112,7 @@ public class HelloControllerTest {
         Assertions.assertEquals((int) jsonResult.get("code"), 0);
         cookies = resp.getResponseCookies();
         System.out.println("cookies key: " + cookies.keySet());
+        Assertions.assertEquals(cookies.keySet().toString(), "[JSESSIONID]");
     }
 
 
@@ -120,11 +121,15 @@ public class HelloControllerTest {
     @DisplayName("a hello test")
     void greetingTest() {
         String url = "http://localhost:" + port + "/hello/get";
-        webTestClient
+        EntityExchangeResult<String> resp = webTestClient
                 .get()
                 .uri(url)
+                .cookie("JSESSIONID", cookies.get("JSESSIONID").toString())
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(String.class);
+                .expectBody(String.class)
+                .returnResult();
+        String result = resp.getResponseBody();
+        System.out.println("hello: " + result);
     }
 }
