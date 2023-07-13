@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class BulkFileUtil {
+    // FIXME: 下载没反应
     public static void downloadFile(File file, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         response.setCharacterEncoding(request.getCharacterEncoding());
         response.setContentType("application/octet-stream");

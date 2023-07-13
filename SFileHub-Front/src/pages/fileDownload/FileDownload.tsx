@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { queryFileList } from "@/api";
+import { queryFileList, downloadFile } from "@/api";
 import { message } from 'antd';
 import { FileSizeFormatter } from "@/util/format";
 import { SaveOutlined, UserOutlined, DownloadOutlined } from '@ant-design/icons';
@@ -76,7 +76,7 @@ const FileCard: React.FC<FileCardProps> = (props) => {
         )
     }
     return (
-        <div className="group flex flex-col drop-shadow-md bg-gray-50 opacity-80 rounded-md p-5">
+        <div onClick={() => downloadFile(fileInfo.identifier)} className="group flex flex-col drop-shadow-md bg-gray-50 opacity-80 rounded-md p-5">
             <CardTitle fileType={fileInfo.fileType} fileName={fileInfo.fileName}/>
             <CardInfo fileSize={fileInfo.size} createBy={fileInfo.createBy} downloadCount={7}/>
         </div>

@@ -13,6 +13,7 @@ import com.keyon.sfilehub.exception.SystemException;
 import com.keyon.sfilehub.util.BulkFileUtil;
 import com.keyon.sfilehub.vo.CheckResultVo;
 import com.keyon.sfilehub.vo.FileStorageVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Service
+@Slf4j
 public class FileStorageService {
     @Autowired
     private FileStorageDao fileStorageDao;
@@ -113,7 +115,8 @@ public class FileStorageService {
     public void downloadByIdentifier(String identifier, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         FileStorage fileStorage = fileStorageDao.findByIdentifier(identifier);
         if (BeanUtil.isNotEmpty(fileStorage)) {
-            File file = new File(baseFileSavePath + File.separator + fileStorage.getFileName()); // TODO
+            File file = new File(String.format("%s/%s/%s", baseFileSavePath, fileStorage.getCreateBy().getUsername(), fileStorage.getStoreName()));
+            log.info("download file path: {}", file.getAbsolutePath());
             BulkFileUtil.downloadFile(file, request, response);
         } else {
             throw new RuntimeException("文件不存在");
