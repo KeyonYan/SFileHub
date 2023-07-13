@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { queryFileList } from "@/api";
-import { message, Card, Space } from 'antd';
+import { message } from 'antd';
 import { FileSizeFormatter } from "@/util/format";
+import { SaveOutlined, UserOutlined, DownloadOutlined } from '@ant-design/icons';
 
-interface FileType {
+interface FileInfo {
     identifier: string,
     fileName: string,
     suffix: string,
@@ -11,10 +12,80 @@ interface FileType {
     size: number,
     createBy: string,
 }
+type FileCardProps = {
+    fileInfo: FileInfo,
+}
+
+const FileCard: React.FC<FileCardProps> = (props) => {
+    const { fileInfo } = props;
+    type CardTitleProps = {
+        fileType: string,
+        fileName: string,
+    }
+    type FileIconProps = {
+        fileType: string,
+    }
+    const FileIcon: React.FC<FileIconProps> = ({fileType}) => {
+        if (fileType === 'IMAGE') {
+            return (
+                <span>🖼️</span>
+            )
+        } else if (fileType === 'VIDEO') {
+            return (
+                <span>🎥</span>
+            )
+        } else if (fileType === 'AUDIO') {
+            return (
+                <span>🎵</span>
+            )
+        } else if (fileType === 'DOCUMENT') {
+            return (
+                <span>📄</span>
+            )
+        } else {
+            return (
+                <span>🗃️</span>
+            )
+        }
+    }
+    const CardTitle: React.FC<CardTitleProps> = ({fileType, fileName}) => {
+        return (
+            <div className="flex flex-row text-lg">
+                <FileIcon fileType={fileType} />
+                <p className=" text-slate-900 group-hover:text-red-500">{fileName}</p>
+            </div>
+        )
+    }
+    type CardInfoProps = {
+        fileSize: number,
+        createBy: string,
+        downloadCount: number,
+    }
+    const CardInfo: React.FC<CardInfoProps> = ({fileSize, createBy, downloadCount}) => {
+        return (
+            <div className="flex flex-row items-center pl-1">
+                <SaveOutlined className=" text-slate-500 pr-0.5" />
+                <span className="text-sm text-slate-500">{FileSizeFormatter(fileSize)}</span>
+                <span className="px-1 text-gray-300">•</span>
+                <UserOutlined className="text-slate-500 pr-0.5" />
+                <span className="text-sm text-slate-500">{createBy} </span>
+                <span className="px-1 text-gray-300">•</span>
+                <DownloadOutlined className="text-slate-500 pr-0.5"/>
+                <span className="text-sm text-slate-500">{downloadCount}</span>
+            </div>
+        )
+    }
+    return (
+        <div className="group flex flex-col drop-shadow-md bg-gray-50 opacity-80 rounded-md p-5">
+            <CardTitle fileType={fileInfo.fileType} fileName={fileInfo.fileName}/>
+            <CardInfo fileSize={fileInfo.size} createBy={fileInfo.createBy} downloadCount={7}/>
+        </div>
+    )
+}
 
 const FileList: React.FC = () => {
     const [messageApi] = message.useMessage();
-    const [fileList, setFileList] = useState<FileType[]>([]); 
+    const [fileList, setFileList] = useState<FileInfo[]>([]); 
     useEffect(() => {
         queryFileList()
         .then(res => {
@@ -30,18 +101,11 @@ const FileList: React.FC = () => {
     }, [messageApi]);
 
     return (
-        <Space direction="vertical" size={16}>
+        <div className="grid gap-4 grid-cols-2">
             {fileList.map((item, index) => ( 
-                <Card key={index} title={item.fileName}>
-                    <ul className="flex flex-col">
-                        <li>identifier: {item.identifier}</li>
-                        <li>fileName: {item.fileName}</li>
-                        <li>size: {FileSizeFormatter(item.size)}</li>
-                        <li>createBy: {item.createBy} </li>
-                    </ul>
-                </Card>
+                <FileCard fileInfo={item} key={index}/>
             ))}
-        </Space>
+        </div>
     );
 }
 
@@ -51,12 +115,7 @@ const FileDownload: React.FC = () => {
         console.log(res)
     });
     return (
-        <div className="flex flex-col">
-            <h1 className="text-xl font-semibold leading-6 text-gray-900">
-                🗃️ FileDownloadPage
-            </h1>
-            <FileList />
-        </div>
+        <FileList />
     )
 }
 

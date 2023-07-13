@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 public class FileChunk extends BaseEntity {
     private String fileName; // 文件名
-    private FileTypeEnum fileType; // 文件类型
+    private String fileType; // 文件类型(非必须)
     private Integer chunkNumber; // 当前分片，从1开始
     private Long chunkSize; // 分片大小
     private Long currentChunkSize; // 当前分片大小
