@@ -10,7 +10,7 @@ export default (): UserConfigExport => ({
     reactRefresh(), 
     viteMockServe({
       mockPath: "src/mock",
-      localEnabled: true,
+      localEnabled: false,
       logger: true,
     })
   ],

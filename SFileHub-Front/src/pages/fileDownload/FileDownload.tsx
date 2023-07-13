@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { queryFileList } from "@/api";
 import { message, Card, Space } from 'antd';
+import { FileSizeFormatter } from "@/util/format";
 
 interface FileType {
     identifier: string,
@@ -31,7 +32,14 @@ const FileList: React.FC = () => {
     return (
         <Space direction="vertical" size={16}>
             {fileList.map((item, index) => ( 
-                <Card key={index} title={item.fileName}>{item.fileType}, {item.fileSize}</Card>
+                <Card key={index} title={item.fileName}>
+                    <ul className="flex flex-col">
+                        <li>identifier: {item.identifier}</li>
+                        <li>fileName: {item.fileName}</li>
+                        <li>size: {FileSizeFormatter(item.size)}</li>
+                        <li>createBy: {item.createBy} </li>
+                    </ul>
+                </Card>
             ))}
         </Space>
     );
