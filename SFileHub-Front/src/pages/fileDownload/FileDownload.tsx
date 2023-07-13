@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { queryFileList } from "@/api";
+import { queryFileList, get } from "@/api";
 import { message } from 'antd';
 
 interface FileType {
@@ -11,35 +11,44 @@ interface FileType {
     createBy: string,
 }
 
-const FileDownload: React.FC = () => {
+const FileList: React.FC = () => {
     const [messageApi] = message.useMessage();
     const [fileList, setFileList] = useState<FileType[]>([]); 
-    
     useEffect(() => {
         queryFileList()
-            .then(res => {
-                if (res.code != 0) {
-                    messageApi.open({
-                        type: 'error',
-                        content: res.msg,
-                    });
-                }
+        .then(res => {
+            if (res.code === 0) {
                 setFileList(res.data);
-                console.log(fileList);
-            });
-    }, []);
+            } else {
+                messageApi.error(res.msg);
+            }
+        });
+        return () => {
+            setFileList([]);
+        }
+    }, [messageApi]);
 
-    const listItems = fileList.map(file =>
-        <li key={file.identifier}>
-            {file.fileName}
-        </li>
+    
+    return (
+        <ul>
+            {fileList.map((item, index) => ( 
+                <li key={index}>{item.fileName}</li>
+            ))}
+        </ul>
     );
+}
+
+const FileDownload: React.FC = () => {
+    queryFileList()
+    .then(res => {
+        console.log(res)
+    });
     return (
         <>
             <h1 className="flex justify-center text-xl font-semibold leading-6 text-gray-900">
                 🗃️ FileDownloadPage
             </h1>
-            <ul>{listItems}</ul>
+            <FileList />
         </>
     )
 }

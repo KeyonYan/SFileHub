@@ -1,12 +1,19 @@
-import { defineConfig } from "vite";
+import { UserConfigExport } from "vite";
 import reactRefresh from "@vitejs/plugin-react-refresh";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import path from "path";
+import { viteMockServe } from "vite-plugin-mock";
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [reactRefresh()],
+export default (): UserConfigExport => ({
+  plugins: [
+    reactRefresh(), 
+    viteMockServe({
+      mockPath: "src/mock",
+      localEnabled: true,
+      logger: true,
+    })
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
