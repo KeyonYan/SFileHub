@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { queryFileList, get } from "@/api";
-import { message } from 'antd';
+import { queryFileList } from "@/api";
+import { message, Card, Space } from 'antd';
 
 interface FileType {
     identifier: string,
@@ -28,13 +28,12 @@ const FileList: React.FC = () => {
         }
     }, [messageApi]);
 
-    
     return (
-        <ul>
+        <Space direction="vertical" size={16}>
             {fileList.map((item, index) => ( 
-                <li key={index}>{item.fileName}</li>
+                <Card key={index} title={item.fileName}>{item.fileType}, {item.fileSize}</Card>
             ))}
-        </ul>
+        </Space>
     );
 }
 
@@ -44,12 +43,12 @@ const FileDownload: React.FC = () => {
         console.log(res)
     });
     return (
-        <>
-            <h1 className="flex justify-center text-xl font-semibold leading-6 text-gray-900">
+        <div className="flex flex-col">
+            <h1 className="text-xl font-semibold leading-6 text-gray-900">
                 🗃️ FileDownloadPage
             </h1>
             <FileList />
-        </>
+        </div>
     )
 }
 
