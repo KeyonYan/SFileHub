@@ -72,6 +72,7 @@ public class FileStorageService {
         // all chunk is uploaded, save fileStorage
         FileStorage fileStorage = FileStorage.builder()
                 .fileName(dto.getFileName())
+                .storeName(String.format("%s.%s", dto.getIdentifier(), suffix))
                 .suffix(suffix)
                 .size(dto.getTotalSize())
                 .identifier(dto.getIdentifier())
