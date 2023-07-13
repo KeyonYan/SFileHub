@@ -12,6 +12,7 @@ import com.keyon.sfilehub.exception.ParameterException;
 import com.keyon.sfilehub.exception.SystemException;
 import com.keyon.sfilehub.util.BulkFileUtil;
 import com.keyon.sfilehub.vo.CheckResultVo;
+import com.keyon.sfilehub.vo.FileStorageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,15 +39,14 @@ public class FileStorageService {
 
     public boolean uploadFile(FileChunkDto dto, User user) {
         CheckResultVo vo = fileChunkService.check(dto);
-        if (vo.getUploaded()) {
-            return true;
-        }
+        if (vo.getUploaded()) return true;
         String fileSavePath = baseFileSavePath + File.separator + user.getUsername();
         File dir = new File(fileSavePath);
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        fileSavePath += File.separator + dto.getFilename();
+        String suffix = FileUtil.getSuffix(dto.getFileName());
+        fileSavePath += String.format("%s%s.%s", File.separator, dto.getIdentifier(), suffix);
         boolean uploadFlag;
         if (dto.getTotalChunks() == 1) {
             uploadFlag = uploadSingleFile(fileSavePath, dto);
@@ -54,7 +54,7 @@ public class FileStorageService {
             uploadFlag = uploadSharding(fileSavePath, dto);
         }
         FileChunk fileChunk = FileChunk.builder()
-                .fileName(dto.getFilename())
+                .fileName(dto.getFileName())
                 .chunkNumber(dto.getChunkNumber())
                 .chunkSize(dto.getChunkSize())
                 .currentChunkSize(dto.getCurrentChunkSize())
@@ -64,13 +64,15 @@ public class FileStorageService {
                 .createBy(user)
                 .build();
         fileChunkService.save(fileChunk);
-        if (vo.getUploadedChunks() == null) return uploadFlag;
-        int currentUploadedChunks = vo.getUploadedChunks().size() + (uploadFlag ? 1 : 0);
-        if (currentUploadedChunks < dto.getTotalChunks()) return uploadFlag;
+        if (dto.getTotalChunks() != 1) {
+            if (vo.getUploadedChunks() == null) return uploadFlag;
+            int currentUploadedChunks = vo.getUploadedChunks().size() + (uploadFlag ? 1 : 0);
+            if (currentUploadedChunks < dto.getTotalChunks()) return uploadFlag;
+        }
         // all chunk is uploaded, save fileStorage
         FileStorage fileStorage = FileStorage.builder()
-                .fileName(dto.getFilename())
-                .suffix(FileUtil.getSuffix(dto.getFilename()))
+                .fileName(dto.getFileName())
+                .suffix(suffix)
                 .size(dto.getTotalSize())
                 .identifier(dto.getIdentifier())
                 .createBy(user)
@@ -101,6 +103,12 @@ public class FileStorageService {
         return true;
     }
 
+    public boolean hasFile(String identifier) {
+        FileStorage fileStorage = fileStorageDao.findByIdentifier(identifier);
+        if (fileStorage == null) return false;
+        return true;
+    }
+
     public void downloadByIdentifier(String identifier, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         FileStorage fileStorage = fileStorageDao.findByIdentifier(identifier);
         if (BeanUtil.isNotEmpty(fileStorage)) {
@@ -109,5 +117,14 @@ public class FileStorageService {
         } else {
             throw new RuntimeException("文件不存在");
         }
+    }
+
+    public List<FileStorageVo> queryFileList(User user) {
+        List<FileStorage> fileStorageList = fileStorageDao.findByCreateBy(user);
+        List<FileStorageVo> fileStorageVoList = BeanUtil.copyToList(fileStorageList, FileStorageVo.class);
+        fileStorageVoList.forEach(vo -> {
+            vo.setCreateBy(user.getUsername());
+        });
+        return fileStorageVoList;
     }
 }

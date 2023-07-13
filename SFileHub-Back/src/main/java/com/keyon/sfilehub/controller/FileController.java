@@ -1,6 +1,7 @@
 package com.keyon.sfilehub.controller;
 
 import com.keyon.sfilehub.dto.FileChunkDto;
+import com.keyon.sfilehub.entity.FileStorage;
 import com.keyon.sfilehub.entity.User;
 import com.keyon.sfilehub.exception.BusinessException;
 import com.keyon.sfilehub.service.FileChunkService;
@@ -8,6 +9,7 @@ import com.keyon.sfilehub.service.FileStorageService;
 import com.keyon.sfilehub.service.UserService;
 import com.keyon.sfilehub.util.ResultUtil;
 import com.keyon.sfilehub.vo.CheckResultVo;
+import com.keyon.sfilehub.vo.FileStorageVo;
 import com.keyon.sfilehub.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/file")
@@ -31,9 +35,10 @@ public class FileController {
     @Autowired
     private UserService userService;
 
+    @Deprecated
     @GetMapping("/uploadCheck")
-    public Result<CheckResultVo> checkUpload(@Validated FileChunkDto dto) {
-        return ResultUtil.success(fileChunkService.check(dto));
+    public Result<Boolean> checkBeforeUpload(@NotNull String identifier) {
+        return ResultUtil.success(fileStorageService.hasFile(identifier));
     }
 
     @PostMapping("/upload")
@@ -55,5 +60,13 @@ public class FileController {
         fileStorageService.downloadByIdentifier(identifier, request, response);
     }
 
+    @GetMapping("/list")
+    public Result<List<FileStorageVo>> queryFileList(Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        if (user == null) {
+            throw new BusinessException("用户不存在");
+        }
+        return ResultUtil.success(fileStorageService.queryFileList(user));
+    }
 
 }

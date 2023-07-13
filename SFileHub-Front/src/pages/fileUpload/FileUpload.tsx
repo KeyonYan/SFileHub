@@ -1,8 +1,8 @@
 import React from "react";
 import type { UploadProps } from 'antd';
-import { Button, Upload, Divider, Form, InputNumber, Switch } from 'antd';
+import { Button, Upload, Divider, Form, InputNumber, Switch, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { upload } from "@/api/index";
+import { upload, checkBeforeUpload } from "@/api/index";
 import { ServiceWithRetry, RetryOptions } from "@/api/request";
 import SparkMD5 from "spark-md5";
 
@@ -56,11 +56,19 @@ const FileUpload: React.FC = () => {
     let isSuccess = true;
 
     const md5 = await getFileMD5(file) as string;
+    
+    const checkResult = await checkBeforeUpload(md5)
+    if (checkResult.code === 0 && checkResult.data === true) {
+      message.info("File already exists, skip upload");
+      onSuccess?.(file);
+      return;
+    }
+
     for (let i = 0; i < totalChunks; i++) {
       const chunkData = getChunkData(file as File, i);
       console.log(chunkData);
       const postParams = {
-        filename: file.name,
+        fileName: file.name,
         chunkNumber: (i+1),
         chunkSize: chunkSize,
         currentChunkSize: file.size,
@@ -86,6 +94,7 @@ const FileUpload: React.FC = () => {
     }
     if (isSuccess) {
       onSuccess?.(file);
+      message.success("Upload success");
     }
   };
 
