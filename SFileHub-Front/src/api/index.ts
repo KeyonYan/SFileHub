@@ -35,7 +35,7 @@ export function post() {
     })
 }
 interface UploadParams {
-    filename: string;
+    fileName: string;
     chunkNumber: number;
     chunkSize: number;
     currentChunkSize: number;
@@ -52,6 +52,13 @@ export function upload(params: UploadParams) {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
+    })
+}
+
+export function checkBeforeUpload(identifier: string) {
+    return Service({
+        url: "/api/file/uploadCheck?identifier=" + identifier,
+        method: 'GET',
     })
 }
 

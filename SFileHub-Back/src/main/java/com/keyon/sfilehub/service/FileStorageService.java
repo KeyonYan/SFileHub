@@ -2,20 +2,19 @@ package com.keyon.sfilehub.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
-import com.keyon.sfilehub.dao.FileChunkDao;
 import com.keyon.sfilehub.dao.FileStorageDao;
 import com.keyon.sfilehub.dto.FileChunkDto;
 import com.keyon.sfilehub.entity.FileChunk;
 import com.keyon.sfilehub.entity.FileStorage;
 import com.keyon.sfilehub.entity.User;
-import com.keyon.sfilehub.exception.ParameterException;
 import com.keyon.sfilehub.exception.SystemException;
 import com.keyon.sfilehub.util.BulkFileUtil;
 import com.keyon.sfilehub.vo.CheckResultVo;
+import com.keyon.sfilehub.vo.FileStorageVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +25,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Service
+@Slf4j
 public class FileStorageService {
     @Autowired
     private FileStorageDao fileStorageDao;
@@ -38,15 +38,14 @@ public class FileStorageService {
 
     public boolean uploadFile(FileChunkDto dto, User user) {
         CheckResultVo vo = fileChunkService.check(dto);
-        if (vo.getUploaded()) {
-            return true;
-        }
+        if (vo.getUploaded()) return true;
         String fileSavePath = baseFileSavePath + File.separator + user.getUsername();
         File dir = new File(fileSavePath);
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        fileSavePath += File.separator + dto.getFilename();
+        String suffix = FileUtil.getSuffix(dto.getFileName());
+        fileSavePath += String.format("%s%s.%s", File.separator, dto.getIdentifier(), suffix);
         boolean uploadFlag;
         if (dto.getTotalChunks() == 1) {
             uploadFlag = uploadSingleFile(fileSavePath, dto);
@@ -54,7 +53,7 @@ public class FileStorageService {
             uploadFlag = uploadSharding(fileSavePath, dto);
         }
         FileChunk fileChunk = FileChunk.builder()
-                .fileName(dto.getFilename())
+                .fileName(dto.getFileName())
                 .chunkNumber(dto.getChunkNumber())
                 .chunkSize(dto.getChunkSize())
                 .currentChunkSize(dto.getCurrentChunkSize())
@@ -64,13 +63,16 @@ public class FileStorageService {
                 .createBy(user)
                 .build();
         fileChunkService.save(fileChunk);
-        if (vo.getUploadedChunks() == null) return uploadFlag;
-        int currentUploadedChunks = vo.getUploadedChunks().size() + (uploadFlag ? 1 : 0);
-        if (currentUploadedChunks < dto.getTotalChunks()) return uploadFlag;
+        if (dto.getTotalChunks() != 1) {
+            if (vo.getUploadedChunks() == null) return uploadFlag;
+            int currentUploadedChunks = vo.getUploadedChunks().size() + (uploadFlag ? 1 : 0);
+            if (currentUploadedChunks < dto.getTotalChunks()) return uploadFlag;
+        }
         // all chunk is uploaded, save fileStorage
         FileStorage fileStorage = FileStorage.builder()
-                .fileName(dto.getFilename())
-                .suffix(FileUtil.getSuffix(dto.getFilename()))
+                .fileName(dto.getFileName())
+                .fileLink(fileSavePath)
+                .suffix(suffix)
                 .size(dto.getTotalSize())
                 .identifier(dto.getIdentifier())
                 .createBy(user)
@@ -101,13 +103,27 @@ public class FileStorageService {
         return true;
     }
 
+    public boolean hasFile(String identifier) {
+        FileStorage fileStorage = fileStorageDao.findByIdentifier(identifier);
+        if (fileStorage == null) return false;
+        return true;
+    }
+
     public void downloadByIdentifier(String identifier, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         FileStorage fileStorage = fileStorageDao.findByIdentifier(identifier);
         if (BeanUtil.isNotEmpty(fileStorage)) {
-            File file = new File(baseFileSavePath + File.separator + fileStorage.getFileName()); // TODO
-            BulkFileUtil.downloadFile(file, request, response);
+            BulkFileUtil.downloadFile(fileStorage, request, response);
         } else {
             throw new RuntimeException("文件不存在");
         }
+    }
+
+    public List<FileStorageVo> queryFileList(User user) {
+        List<FileStorage> fileStorageList = fileStorageDao.findByCreateBy(user);
+        List<FileStorageVo> fileStorageVoList = BeanUtil.copyToList(fileStorageList, FileStorageVo.class);
+        fileStorageVoList.forEach(vo -> {
+            vo.setCreateBy(user.getUsername());
+        });
+        return fileStorageVoList;
     }
 }

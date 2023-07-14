@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class FileChunkDto {
     @NotNull
-    private String filename; // 文件名
+    private String fileName; // 文件名
     @Min(1)
     private Integer chunkNumber; // 当前分片，从1开始
     @Min(1)
