@@ -55,8 +55,8 @@ public class FileController {
         }
     }
 
-    @GetMapping("/download/{identifier}")
-    public void download(@PathVariable("identifier") String identifier, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+    @GetMapping("/download")
+    public void download(@RequestParam("identifier")String identifier, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         fileStorageService.downloadByIdentifier(identifier, request, response);
     }
 

@@ -2,13 +2,11 @@ package com.keyon.sfilehub.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
-import com.keyon.sfilehub.dao.FileChunkDao;
 import com.keyon.sfilehub.dao.FileStorageDao;
 import com.keyon.sfilehub.dto.FileChunkDto;
 import com.keyon.sfilehub.entity.FileChunk;
 import com.keyon.sfilehub.entity.FileStorage;
 import com.keyon.sfilehub.entity.User;
-import com.keyon.sfilehub.exception.ParameterException;
 import com.keyon.sfilehub.exception.SystemException;
 import com.keyon.sfilehub.util.BulkFileUtil;
 import com.keyon.sfilehub.vo.CheckResultVo;
@@ -17,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,7 +71,7 @@ public class FileStorageService {
         // all chunk is uploaded, save fileStorage
         FileStorage fileStorage = FileStorage.builder()
                 .fileName(dto.getFileName())
-                .storeName(String.format("%s.%s", dto.getIdentifier(), suffix))
+                .fileLink(fileSavePath)
                 .suffix(suffix)
                 .size(dto.getTotalSize())
                 .identifier(dto.getIdentifier())
@@ -115,9 +112,7 @@ public class FileStorageService {
     public void downloadByIdentifier(String identifier, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         FileStorage fileStorage = fileStorageDao.findByIdentifier(identifier);
         if (BeanUtil.isNotEmpty(fileStorage)) {
-            File file = new File(String.format("%s/%s/%s", baseFileSavePath, fileStorage.getCreateBy().getUsername(), fileStorage.getStoreName()));
-            log.info("download file path: {}", file.getAbsolutePath());
-            BulkFileUtil.downloadFile(file, request, response);
+            BulkFileUtil.downloadFile(fileStorage, request, response);
         } else {
             throw new RuntimeException("文件不存在");
         }

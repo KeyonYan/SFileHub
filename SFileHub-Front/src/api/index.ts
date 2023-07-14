@@ -72,6 +72,9 @@ export function queryFileList() {
 export function downloadFile(identifier: string) {
     return Service({
         url: "/api/file/download/" + identifier,
-        method: 'GET'
+        method: 'POST',
+        headers: {
+            responseType: 'blob'
+        }
     })
 }

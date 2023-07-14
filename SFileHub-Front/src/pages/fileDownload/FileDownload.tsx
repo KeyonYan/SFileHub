@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { queryFileList, downloadFile } from "@/api";
 import { message } from 'antd';
 import { FileSizeFormatter } from "@/util/format";
-import { SaveOutlined, UserOutlined, DownloadOutlined } from '@ant-design/icons';
+import { SaveOutlined, UserOutlined, DownloadOutlined, CloudDownloadOutlined } from '@ant-design/icons';
 
 interface FileInfo {
     identifier: string,
@@ -50,9 +50,9 @@ const FileCard: React.FC<FileCardProps> = (props) => {
     }
     const CardTitle: React.FC<CardTitleProps> = ({fileType, fileName}) => {
         return (
-            <div className="flex flex-row text-lg">
+            <div className="flex flex-row text-lg overflow-hidden">
                 <FileIcon fileType={fileType} />
-                <p className=" text-slate-900 group-hover:text-red-500">{fileName}</p>
+                <p className=" text-slate-900">{fileName}</p>
             </div>
         )
     }
@@ -75,10 +75,21 @@ const FileCard: React.FC<FileCardProps> = (props) => {
             </div>
         )
     }
+    const handleDownload = (identifier: string) => {
+        return () => {
+            window.location.href = "/api/file/download?identifier=" + identifier;
+        }
+    }
+
     return (
-        <div onClick={() => downloadFile(fileInfo.identifier)} className="group flex flex-col drop-shadow-md bg-gray-50 opacity-80 rounded-md p-5">
-            <CardTitle fileType={fileInfo.fileType} fileName={fileInfo.fileName}/>
-            <CardInfo fileSize={fileInfo.size} createBy={fileInfo.createBy} downloadCount={7}/>
+        <div className="relative rounded-md">
+            <div onClick={handleDownload(fileInfo.identifier)} className="absolute text-slate-500 hover:text-red-500 text-lg bottom-0 right-2 z-10">
+                <CloudDownloadOutlined />
+            </div>
+            <div className="flex flex-col drop-shadow-md bg-gray-50 rounded-md p-5">
+                <CardTitle fileType={fileInfo.fileType} fileName={fileInfo.fileName}/>
+                <CardInfo fileSize={fileInfo.size} createBy={fileInfo.createBy} downloadCount={7}/>
+            </div>
         </div>
     )
 }
