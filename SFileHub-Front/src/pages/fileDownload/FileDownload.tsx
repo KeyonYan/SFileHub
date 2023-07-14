@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { queryFileList, downloadFile } from "@/api";
+import { queryFileList } from "@/api";
 import { message } from 'antd';
 import { FileSizeFormatter } from "@/util/format";
 import { SaveOutlined, UserOutlined, DownloadOutlined, CloudDownloadOutlined } from '@ant-design/icons';

@@ -68,13 +68,3 @@ export function queryFileList() {
         method: 'GET'
     })
 }
-
-export function downloadFile(identifier: string) {
-    return Service({
-        url: "/api/file/download/" + identifier,
-        method: 'POST',
-        headers: {
-            responseType: 'blob'
-        }
-    })
-}

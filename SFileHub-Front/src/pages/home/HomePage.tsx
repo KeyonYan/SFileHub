@@ -2,7 +2,7 @@ import React from 'react'
 import NavBar from '@/components/navBar/NavBar'
 import { Layout} from 'antd';
 import { Outlet } from 'react-router-dom';
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
 const HomePage: React.FC = () => {
   return (
