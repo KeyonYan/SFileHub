@@ -42,3 +42,4 @@ UI：`Tailwind` `AndDesign`
 * [X] 自定义AntDesign Upload组件的请求方法，实现**分片上传**
 * [X] **践行Github开源工作流**，dev分支开发完成一个功能点后，提PR给main分支，main分支进行分支合并
 * [X] 编写**集成测试**代码，借助后端CI实现自动化测试
+* [X] 前端集成**mockjs**与vite-mock-plugin，模拟后端接口请求数据
