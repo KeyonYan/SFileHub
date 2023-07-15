@@ -18,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class BulkFileUtil {
-    // FIXME: 下载没反应
     public static void downloadFile(FileStorage fileStorage, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         File file = new File(fileStorage.getFileLink());
         log.info("download file path: {}", file.getAbsolutePath());
@@ -31,15 +30,14 @@ public class BulkFileUtil {
             int len = 0;
             response.reset();
             // 在线打开方式
-            if (false) {
-                URL u = new URL("file:///" + fileStorage.getFileLink());
-                response.setContentType(u.openConnection().getContentType());
-                response.setHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(fileStorage.getFileName(), "UTF-8"));
-            } else { // 纯下载方式
-                response.setContentType("application/x-msdownload");
-                response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileStorage.getFileName(), "UTF-8"));
-                response.setContentType("application/octet-stream; charset=utf-8");
-            }
+            URL u = new URL("file:///" + fileStorage.getFileLink());
+            response.setContentType(u.openConnection().getContentType());
+            response.setHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(fileStorage.getFileName(), "UTF-8"));
+            // 纯下载方式
+            response.setContentType("application/x-msdownload");
+            response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileStorage.getFileName(), "UTF-8"));
+            response.setContentType("application/octet-stream; charset=utf-8");
+            
             OutputStream out = response.getOutputStream();
             while ((len = brInputStream.read(buf)) > 0){
                 out.write(buf, 0, len);
