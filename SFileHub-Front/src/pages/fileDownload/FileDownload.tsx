@@ -86,7 +86,7 @@ const FileCard: React.FC<FileCardProps> = (props) => {
             <div onClick={handleDownload(fileInfo.identifier)} className="absolute text-slate-500 hover:text-red-500 text-lg bottom-0 right-2 z-10">
                 <CloudDownloadOutlined />
             </div>
-            <div className="flex flex-col drop-shadow-md bg-gray-50 rounded-md p-5">
+            <div className="flex flex-col drop-shadow-md bg-white rounded-md p-5">
                 <CardTitle fileType={fileInfo.fileType} fileName={fileInfo.fileName}/>
                 <CardInfo fileSize={fileInfo.size} createBy={fileInfo.createBy} downloadCount={7}/>
             </div>
